@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AMAURY TCHOUPE — Ingénieur Mécanique</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: {
+        fontFamily: {
+          grotesk: ['Space Grotesk','sans-serif'],
+          mono: ['JetBrains Mono','monospace'],
+        }
+      }}
+    }
+  </script>
+
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', sans-serif; }
+    body { transition: background .3s, color .3s; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #E8F4FE; }
+    ::-webkit-scrollbar-thumb { background: #0ea5e9; border-radius: 4px; }
+    .dark ::-webkit-scrollbar-thumb { background: #22d3ee; }
+
+    /* ── Gradient text ── */
+    .g-text {
+      background: linear-gradient(130deg,#38bdf8 0%,#818cf8 60%,#c084fc 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Noise overlay ── */
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      opacity: .6;
+    }
+
+    /* ── Sections relative to noise ── */
+    section, nav, footer { position: relative; z-index: 1; }
+
+    /* ── Nav link ── */
+    .nl { position: relative; transition: color .2s; }
+    .nl::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 2px; background: #38bdf8; transition: width .25s; border-radius: 2px; }
+    .dark .nl::after { background: #22d3ee; }
+    .nl:hover::after, .nl.active::after { width: 100%; }
+    .nl.active { color: #fff; }
+
+    /* ── Reveal animation (scroll-triggered, starts VISIBLE if above fold) ── */
+    .rv { opacity: 1; transform: none; }
+    .rv.will-reveal { opacity: 0; transform: translateY(28px); transition: opacity .65s ease, transform .65s ease; }
+    .rv.will-reveal.shown { opacity: 1; transform: none; }
+
+    /* ── Hero entrance (CSS keyframe, always plays) ── */
+    @keyframes heroIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
+    .hero-in { animation: heroIn .7s ease both; }
+    .d1 { animation-delay: .05s; }
+    .d2 { animation-delay: .15s; }
+    .d3 { animation-delay: .25s; }
+    .d4 { animation-delay: .38s; }
+    .d5 { animation-delay: .52s; }
+
+    /* ── Cursor blink ── */
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .blink { animation: blink 1s step-end infinite; }
+
+    /* ── Project card ── */
+    .pcard { transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; cursor: pointer; }
+    .pcard:hover { transform: translateY(-7px); }
+    .pcard:hover .pcard-overlay { opacity: 1; }
+    .pcard-overlay { opacity: 0; transition: opacity .25s; }
+
+    /* ── Skill bar fill ── */
+    .bar-fill { transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+
+    /* ── Modal ── */
+    #modal { display:none; }
+    #modal.open { display:flex; }
+    #mbox { transform: translateY(24px) scale(.97); opacity:0; transition: transform .35s ease, opacity .35s ease; }
+    #modal.open #mbox { transform: none; opacity:1; }
+
+    /* ── Tag chip ── */
+    .chip {
+      display:inline-flex; align-items:center; padding:2px 9px;
+      font-family:'JetBrains Mono',monospace; font-size:.68rem; border-radius:6px;
+      border:1px solid rgba(56,189,248,.22); background:rgba(56,189,248,.07); color:#38bdf8;
+    }
+    .dark .chip { border-color:rgba(34,211,238,.2); background:rgba(34,211,238,.06); color:#67e8f9; }
+
+    /* ── Section label ── */
+    .slabel { font-family:'JetBrains Mono',monospace; font-size:.68rem; letter-spacing:.15em; text-transform:uppercase; }
+
+    /* ── Timeline dot ── */
+    @keyframes tdot { 0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,.5)} 60%{box-shadow:0 0 0 8px rgba(56,189,248,0)} }
+    .tdot { animation: tdot 2.4s infinite; }
+
+
+    /* ── Lang toggle ── */
+    .lang-toggle { display:flex; align-items:center; gap:2px; padding:3px; border-radius:8px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); }
+    .lang-btn { font-family:'JetBrains Mono',monospace; font-size:.65rem; font-weight:600; padding:3px 7px; border-radius:5px; border:none; cursor:pointer; background:transparent; color:#64748b; transition:all .2s; letter-spacing:.04em; }
+    .lang-btn.active { background:#0ea5e9; color:#fff; }
+    .lang-btn:hover:not(.active) { color:#94a3b8; }
+
+    /* ── Input focus ── */
+    .finput { transition:border-color .2s, box-shadow .2s; }
+    .finput:focus { outline:none; border-color:#38bdf8; box-shadow:0 0 0 3px rgba(56,189,248,.15); }
+
+    /* ── Mobile menu ── */
+    #mmenu { max-height:0; overflow:hidden; transition:max-height .3s ease; }
+    #mmenu.open { max-height:300px; }
+
+    /* ── Gradient border card ── */
+    .gborder { background: linear-gradient(135deg,rgba(56,189,248,.12),rgba(129,140,248,.12)); border:1px solid rgba(56,189,248,.18); }
+    .dark .gborder { background:linear-gradient(135deg,rgba(56,189,248,.06),rgba(129,140,248,.06)); border-color:rgba(56,189,248,.12); }
+
+    /* ── Canvas glow ── */
+    #simCanvas { border-radius:16px; box-shadow:0 0 60px rgba(56,189,248,.18), 0 0 120px rgba(129,140,248,.08); }
+
+    /* ── Navy card — text overrides ── */
+    [style*="2d5a8e"] .font-grotesk,
+    [style*="2d5a8e"] .text-slate-800,
+    [style*="2d5a8e"] .text-slate-700 { color: #f0f9ff !important; }
+    [style*="2d5a8e"] .text-slate-600,
+    [style*="2d5a8e"] .text-slate-400,
+    [style*="2d5a8e"] .text-slate-500 { color: #bae6fd !important; }
+    [style*="2d5a8e"] .bg-slate-200 { background: rgba(255,255,255,.18) !important; }
+    [style*="2d5a8e"] .border-slate-800 { border-color: rgba(255,255,255,.12) !important; }
+    [style*="2d5a8e"] input,
+    [style*="2d5a8e"] textarea { color: #1e3a5f !important; background: white !important; border:1px solid #bfdbfe !important; }
+    [style*="2d5a8e"] label { color: #bae6fd !important; }
+    [style*="2d5a8e"] .finput:focus { border-color:#0ea5e9 !important; box-shadow:0 0 0 3px rgba(14,165,233,.2) !important; }
+    /* Hero secondary button */
+    .btn-dark { border:2px solid #1e3a5f !important; color:#1e3a5f !important; background:transparent !important; }
+    .btn-dark:hover { background:#1e3a5f !important; color:#fff !important; }
+    /* Hero social circles */
+    .social-circle { border:1px solid #1e3a5f !important; color:#1e3a5f !important; background:transparent !important; }
+    .social-circle:hover { background:#1e3a5f !important; color:#fff !important; }
+    /* .finput light styling */
+    .finput { background:white; border:1px solid #bfdbfe; color:#1e3a5f; border-radius:8px; padding:10px 14px; width:100%; }
+    .finput::placeholder { color:#64748b; }
+
+    /* ── Modals — match card palette ── */
+    #mbox, #nbox {
+      background: #2d5a8e !important;
+      border-color: #3b72b0 !important;
+    }
+    #mbox .bg-slate-900, #nbox .bg-slate-900 { background: #2d5a8e !important; }
+    #mbox .bg-slate-800, #nbox .bg-slate-800 { background: rgba(255,255,255,.1) !important; }
+    #mbox .border-slate-700, #nbox .border-slate-700 { border-color: rgba(255,255,255,.18) !important; }
+    #mbox .border-b.border-slate-800, #nbox .border-b.border-slate-800 { border-color: rgba(255,255,255,.15) !important; }
+    #mbox .border-t.border-slate-800, #nbox .border-t.border-slate-800 { border-color: rgba(255,255,255,.12) !important; }
+    #mbox .text-slate-400, #nbox .text-slate-400 { color: #bae6fd !important; }
+    #mbox .text-slate-500, #nbox .text-slate-500 { color: rgba(255,255,255,.55) !important; }
+    #mbox .text-slate-300, #nbox .text-slate-300 { color: #e0f2fe !important; }
+    #mbox .text-white, #nbox .text-white { color: #f0f9ff !important; }
+    #mbox .h-px, #nbox .h-px { background: rgba(255,255,255,.15) !important; }
+
+  </style>
+</head>
+
+<body style="background-color:#E8F4FE" class="text-slate-800">
+
+<!-- ══════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════ -->
+<nav id="nav" class="fixed top-0 inset-x-0 z-50 bg-slate-950/80 backdrop-blur-xl border-b border-slate-900/80 transition-shadow duration-300">
+  <div class="max-w-6xl mx-auto px-5 h-[60px] flex items-center justify-between">
+
+    <a href="#hero" class="font-grotesk font-bold text-lg">
+      <span class="g-text">AT</span><span class="text-slate-600">.</span>
+    </a>
+
+    <div class="hidden md:flex items-center gap-10">
+      <a href="#competences" class="nl text-base text-slate-400 hover:text-white transition-colors" data-i18n="nav.skills">Compétences</a>
+      <a href="#projets"     class="nl text-base text-slate-400 hover:text-white transition-colors" data-i18n="nav.projects">Projets</a>
+      <a href="#experience"  class="nl text-base text-slate-400 hover:text-white transition-colors" data-i18n="nav.experience">Expériences</a>
+      <a href="#contact"     class="nl text-base text-slate-400 hover:text-white transition-colors" data-i18n="nav.contact">Contact</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <div class="lang-toggle"><button class="lang-btn active" data-lang="fr" onclick="setLang('fr')">FR</button><button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button></div>
+      <div class="hidden md:block w-px h-4 bg-slate-700"></div>
+      <a href="cv_amaury_tchoupe_v3.pdf" download="cv_amaury_tchoupe.pdf" class="hidden md:inline-flex items-center gap-1.5 px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white text-xs font-semibold rounded-lg transition-all font-mono uppercase tracking-wider shadow-lg shadow-sky-900/40">
+        <i class="fa-solid fa-download"></i> CV
+      </a>
+      <button id="mBtn" class="md:hidden w-9 h-9 flex items-center justify-center text-slate-400">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+
+  <div id="mmenu" class="md:hidden border-t border-slate-800 bg-slate-950 px-5 flex flex-col gap-4 py-4">
+    <a href="#competences" class="text-sm text-slate-300" data-i18n="nav.skills">Compétences</a>
+    <a href="#projets"     class="text-sm text-slate-300" data-i18n="nav.projects">Projets</a>
+    <a href="#experience"  class="text-sm text-slate-300" data-i18n="nav.experience">Expériences</a>
+    <a href="#contact"     class="text-sm text-slate-300" data-i18n="nav.contact">Contact</a>
+    <a href="cv_amaury_tchoupe_v3.pdf" download="cv_amaury_tchoupe.pdf" class="text-sm font-semibold text-sky-400" data-i18n="nav.mobile.cv">↓ Télécharger le CV</a>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<section id="hero" class="pt-[60px] relative overflow-hidden" style="min-height:90vh;display:flex;align-items:center;padding-bottom:2rem">
+
+  <!-- Subtle radial glow behind canvas -->
+  <div class="absolute right-0 top-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none"
+       style="background:radial-gradient(ellipse,rgba(56,189,248,.06) 0%,transparent 65%)"></div>
+
+  <div class="max-w-6xl mx-auto px-5 w-full py-20">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+      <!-- ── Left: content ── -->
+      <div>
+        <!-- Avatar + status -->
+        <div class="flex items-center gap-4 mb-8 hero-in d1">
+          <!-- Avatar -->
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center font-grotesk font-bold text-lg text-white shrink-0"
+               style="background:linear-gradient(135deg,#0ea5e9,#6366f1)">AT</div>
+          <!-- Status -->
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono" style="border:1px solid rgba(14,165,233,.4);background:rgba(14,165,233,.1);color:#0369a1">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0" style="animation:blink 2s step-end infinite"></span>
+            <span data-i18n="hero.status">Disponible · Montréal, QC</span>
+          </div>
+        </div>
+
+        <!-- Name -->
+        <h1 class="font-grotesk font-bold leading-[1.04] mb-5 hero-in d2"
+            style="font-size:clamp(3rem,7vw,5.5rem)">
+          <span class="g-text">AMAURY</span><br/><span class="g-text">TCHOUPE</span>
+        </h1>
+
+        <!-- Subtitle with terminal cursor -->
+        <p class="font-mono text-sm mb-3 hero-in d3" style="letter-spacing:.04em;color:#1e3a5f">
+          <span data-i18n="hero.subtitle">&gt; CPI génie mécanique | Simulation numérique · CAD · IA appliquée | Systèmes physiques complexes</span><span class="blink text-sky-500">_</span>
+        </p>
+
+        <!-- Specialty badges -->
+        <div class="flex flex-wrap gap-2 mb-10 hero-in d4">
+          <span class="chip" style="border-color:rgba(14,165,233,.45);background:rgba(14,165,233,.12);color:#0369a1" data-i18n="hero.badge.sim">Simulation numérique</span>
+          <span class="chip" style="border-color:rgba(99,102,241,.45);background:rgba(99,102,241,.12);color:#4338ca" data-i18n="hero.badge.ai">IA appliquée</span>
+          <span class="chip" style="border-color:rgba(5,150,105,.45);background:rgba(5,150,105,.12);color:#065f46" data-i18n="hero.badge.rdm">Calcul RDM</span>
+          <span class="chip" style="border-color:rgba(234,88,12,.45);background:rgba(234,88,12,.12);color:#9a3412" data-i18n="hero.badge.cad">Design CAD</span>
+        </div>
+
+        <!-- CTAs -->
+        <div class="flex flex-wrap gap-3 mb-10 hero-in d5">
+          <a href="cv_amaury_tchoupe_v3.pdf" download="cv_amaury_tchoupe.pdf"
+             class="inline-flex items-center gap-2 px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-xl transition-all shadow-xl shadow-sky-900/40 hover:shadow-sky-800/60 text-sm">
+            <i class="fa-solid fa-download text-xs"></i> <span data-i18n="hero.btn.cv">Télécharger le CV</span>
+          </a>
+          <a href="#projets"
+             class="inline-flex items-center gap-2 px-6 py-3 font-semibold rounded-xl transition-all text-sm"
+             style="border:2px solid #1e3a5f;color:#1e3a5f;background:transparent"
+             onmouseover="this.style.background='#1e3a5f';this.style.color='white'"
+             onmouseout="this.style.background='transparent';this.style.color='#1e3a5f'">
+            <span data-i18n="hero.btn.projects">Voir mes projets</span> <i class="fa-solid fa-arrow-down text-xs"></i>
+          </a>
+        </div>
+
+        <!-- Socials -->
+        <div class="flex items-center gap-3 hero-in d5">
+          <span class="text-xs font-mono uppercase tracking-widest" style="color:#1e3a5f" data-i18n="hero.links">Links</span>
+          <div class="h-px w-10" style="background:#2d5a8e;opacity:.3"></div>
+          <a href="https://github.com/Brivell" target="_blank" rel="noopener"
+             class="social-circle w-9 h-9 rounded-full flex items-center justify-center transition-all">
+            <i class="fa-brands fa-github text-sm"></i></a>
+          <a href="https://www.linkedin.com/in/amaury-tchoupe-3b24ab190/" target="_blank" rel="noopener"
+             class="social-circle w-9 h-9 rounded-full flex items-center justify-center transition-all">
+            <i class="fa-brands fa-linkedin text-sm"></i></a>
+          <a href="mailto:amaurytchoupe01@gmail.com"
+             class="social-circle w-9 h-9 rounded-full flex items-center justify-center transition-all">
+            <i class="fa-solid fa-envelope text-sm"></i></a>
+        </div>
+      </div>
+
+      <!-- ── Right: live simulation canvas ── -->
+      <div class="hidden lg:flex flex-col items-center gap-4 hero-in d3">
+        <div class="w-full relative">
+          <canvas id="simCanvas" width="420" height="300" class="w-full"></canvas>
+          <!-- Overlay labels -->
+          <div class="absolute top-3 left-3 font-mono text-xs text-white/70 bg-black/40 px-2 py-1 rounded-md backdrop-blur-sm" data-i18n="hero.canvas.overlay">TPS · Champ T(x,y,t)</div>
+          <div class="absolute top-3 right-3 font-mono text-xs text-sky-300 bg-black/40 px-2 py-1 rounded-md backdrop-blur-sm" id="simTime">
+            t = 0 s
+          </div>
+          <!-- Colorbar -->
+          <div class="absolute right-3 bottom-10 top-10 w-3 rounded-sm overflow-hidden" style="background:linear-gradient(to bottom,#f0f921,#f89441,#cc4778,#7e03a8,#0d0887)"></div>
+          <div class="absolute right-7 bottom-9 font-mono text-[10px] text-white/60">T_max</div>
+          <div class="absolute right-7 top-9 font-mono text-[10px] text-white/60">T_min</div>
+        </div>
+        <p class="text-xs font-mono text-center" style="color:#3b82f6" data-i18n="hero.canvas.label">Simulation thermique 2D — FDM · COMSOL validated</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     COMPÉTENCES
+══════════════════════════════════════ -->
+<section id="competences" class="py-24" style="background-color:#E8F4FE;border-top:1px solid rgba(30,58,95,.25)">
+  <div class="max-w-6xl mx-auto px-5">
+
+    <div class="mb-14 rv will-reveal">
+      <p class="slabel text-sky-400 mb-2" data-i18n="skills.label">// Compétences techniques</p>
+      <h2 class="font-grotesk font-bold text-3xl sm:text-4xl text-slate-800" data-i18n="skills.title">Stack & outils</h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <!-- Simulation -->
+      <div class="rv will-reveal p-6 rounded-2xl border hover:border-sky-400 transition-colors" style="background:#2d5a8e;border:1px solid #3b72b0">
+        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-5">
+          <i class="fa-solid fa-wave-square text-sky-200"></i>
+        </div>
+        <p class="font-grotesk font-semibold text-slate-700 mb-1" data-i18n="skills.sim.title">Simulation</p>
+        <p class="text-xs text-slate-500 mb-5 font-mono" data-i18n="skills.sim.sub">FEM · FDM · CFD · Thermique</p>
+        <div class="space-y-3">
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>COMSOL</span><span class="text-sky-500" data-i18n="level.advanced">Avancé</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-sky-400 rounded-full" style="width:88%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>FEM / FDM</span><span class="text-sky-500" data-i18n="level.advanced">Avancé</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-sky-400 rounded-full" style="width:85%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>Ansys</span><span class="text-slate-500" data-i18n="level.intermediate">Intermédiaire</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-slate-400 rounded-full" style="width:65%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>Simulia</span><span class="text-slate-500" data-i18n="level.intermediate">Intermédiaire</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-slate-400 rounded-full" style="width:60%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>OpenFOAM</span><span class="text-slate-500" data-i18n="level.intermediate">Intermédiaire</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-slate-400 rounded-full" style="width:58%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAD -->
+      <div class="rv will-reveal p-6 rounded-2xl border hover:border-orange-400 transition-colors" style="background:#2d5a8e;border:1px solid #3b72b0;transition-delay:.08s">
+        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-5">
+          <i class="fa-solid fa-cube text-orange-300"></i>
+        </div>
+        <p class="font-grotesk font-semibold text-slate-700 mb-1" data-i18n="skills.cad.title">CAD & Design</p>
+        <p class="text-xs text-slate-500 mb-5 font-mono" data-i18n="skills.cad.sub">3D · 2D · Mécanismes</p>
+        <div class="space-y-3">
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>SolidWorks</span><span class="text-orange-400" data-i18n="level.advanced">Avancé</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-orange-400 rounded-full" style="width:82%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>CATIA</span><span class="text-orange-400" data-i18n="level.advanced">Avancé</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-orange-400 rounded-full" style="width:78%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>Inventor</span><span class="text-slate-500" data-i18n="level.intermediate">Intermédiaire</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-slate-400 rounded-full" style="width:60%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>Solid Edge</span><span style="color:#f97316" data-i18n="level.intermediate">Intermédiaire</span></div>
+            <div class="h-1 rounded-full" style="background:rgba(255,255,255,.18)"><div class="bar-fill h-1 rounded-full" style="background:#f97316;width:55%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>Enovia</span><span class="text-slate-500" data-i18n="level.intermediate">Intermédiaire</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-slate-400 rounded-full" style="width:52%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IA / ML -->
+      <div class="rv will-reveal p-6 rounded-2xl border hover:border-violet-400 transition-colors" style="background:#2d5a8e;border:1px solid #3b72b0;transition-delay:.16s">
+        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-5">
+          <i class="fa-solid fa-brain text-violet-300"></i>
+        </div>
+        <p class="font-grotesk font-semibold text-slate-700 mb-1" data-i18n="skills.ai.title">IA & ML</p>
+        <p class="text-xs text-slate-500 mb-5 font-mono" data-i18n="skills.ai.sub">Deep Learning · Surrogate</p>
+        <div class="space-y-3">
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>PyTorch</span><span class="text-violet-400" data-i18n="level.advanced">Avancé</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-violet-400 rounded-full" style="width:80%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>scikit-learn / GP</span><span class="text-violet-400" data-i18n="level.advanced">Avancé</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-violet-400 rounded-full" style="width:85%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>TensorFlow</span><span class="text-slate-500" data-i18n="level.intermediate">Intermédiaire</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-slate-400 rounded-full" style="width:65%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Programmation -->
+      <div class="rv will-reveal p-6 rounded-2xl border hover:border-emerald-400 transition-colors" style="background:#2d5a8e;border:1px solid #3b72b0;transition-delay:.24s">
+        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-5">
+          <i class="fa-solid fa-code text-emerald-300"></i>
+        </div>
+        <p class="font-grotesk font-semibold text-slate-700 mb-1" data-i18n="skills.prog.title">Programmation</p>
+        <p class="text-xs text-slate-500 mb-5 font-mono" data-i18n="skills.prog.sub">Scripts · API · Embarqué</p>
+        <div class="space-y-3">
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>Python</span><span class="text-emerald-500" data-i18n="level.advanced">Avancé</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-emerald-400 rounded-full" style="width:90%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>Matlab</span><span class="text-emerald-500" data-i18n="level.advanced">Avancé</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-emerald-400 rounded-full" style="width:85%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>C++ / Arduino</span><span class="text-emerald-500" data-i18n="level.intermediate">Intermédiaire</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-emerald-400 rounded-full" style="width:68%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs text-slate-600 mb-1"><span>FastAPI / SQL</span><span class="text-slate-500" data-i18n="level.intermediate">Intermédiaire</span></div>
+            <div class="h-1 bg-slate-200 rounded-full"><div class="bar-fill h-1 bg-slate-400 rounded-full" style="width:62%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     PROJETS
+══════════════════════════════════════ -->
+<section id="projets" class="py-24" style="border-top:1px solid rgba(30,58,95,.25)">
+  <div class="max-w-6xl mx-auto px-5">
+
+    <div class="mb-14 rv will-reveal">
+      <p class="slabel text-sky-400 mb-2" data-i18n="projects.label">// Projets sélectionnés</p>
+      <h2 class="font-grotesk font-bold text-3xl sm:text-4xl text-slate-800" data-i18n="projects.title">Ce que j'ai construit</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- TPS -->
+      <div class="pcard rv will-reveal rounded-2xl hover:border-sky-400 overflow-hidden"
+           style="background:#2d5a8e;border:1px solid #3b72b0"
+           onclick="openModal('tps')">
+        <div class="relative h-48 overflow-hidden">
+          <img src="Portfolio/TPS_simulation_final/benchmark_gp_vs_mlp.png" alt="TPS validation COMSOL"
+               class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="pcard-overlay absolute inset-0 bg-sky-950/80 flex items-center justify-center backdrop-blur-sm">
+            <span class="font-mono text-sky-300 text-sm border border-sky-500 px-4 py-2 rounded-lg" data-i18n="projects.see">Voir les détails →</span>
+          </div>
+          <div class="absolute top-3 right-3 chip" style="background:rgba(0,0,0,.5);backdrop-filter:blur(8px)">Simulation · IA</div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-grotesk font-bold text-xl text-white mb-2">TPS Thermal Surrogate</h3>
+          <p class="text-sm mb-4 leading-relaxed" style="color:#bae6fd" data-i18n="tps.desc">Pipeline FEM→ML pour la protection thermique de rentrée atmosphérique. GP surrogate : 0.03 % d'erreur, 100 000× d'accélération vs COMSOL.</p>
+          <div class="flex flex-wrap gap-1.5 mb-5">
+            <span class="chip" style="border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.12);color:#e0f2fe">COMSOL</span><span class="chip" style="border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.12);color:#e0f2fe">Python</span><span class="chip" style="border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.12);color:#e0f2fe">GP</span><span class="chip" style="border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.12);color:#e0f2fe">MLP</span><span class="chip" style="border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.12);color:#e0f2fe">Streamlit</span>
+          </div>
+          <div class="grid grid-cols-3 gap-3 pt-4" style="border-top:1px solid rgba(255,255,255,.12)">
+            <div><p class="text-lg font-grotesk font-bold text-sky-400">0.03%</p><p class="text-xs text-slate-500" data-i18n="tps.m1">Erreur GP</p></div>
+            <div><p class="text-lg font-grotesk font-bold text-sky-400">100k×</p><p class="text-xs text-slate-500" data-i18n="tps.m2">Accélération</p></div>
+            <div><p class="text-lg font-grotesk font-bold text-sky-400">0.9999</p><p class="text-xs text-slate-500" data-i18n="tps.m3">R² GP</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- POL-E -->
+      <div class="pcard rv will-reveal rounded-2xl hover:border-emerald-400 overflow-hidden"
+           style="background:#2d5a8e;border:1px solid #3b72b0;transition-delay:.1s"
+           onclick="openModal('pole')">
+        <div class="relative h-48 overflow-hidden">
+          <img src="Portfolio/Projet2/Final_Product_Front.jpg" alt="Robot POL-E"
+               class="w-full h-full object-cover transition-transform duration-500" />
+          <div class="pcard-overlay absolute inset-0 bg-emerald-950/80 flex items-center justify-center backdrop-blur-sm">
+            <span class="font-mono text-emerald-300 text-sm border border-emerald-500 px-4 py-2 rounded-lg" data-i18n="projects.see">Voir les détails →</span>
+          </div>
+          <div class="absolute top-3 right-3 chip" style="border-color:rgba(52,211,153,.3);background:rgba(0,0,0,.5);color:#6ee7b7;backdrop-filter:blur(8px)">CAD · RDM</div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-grotesk font-bold text-xl text-white mb-2">POL-E</h3>
+          <p class="text-sm mb-4 leading-relaxed" style="color:#bae6fd" data-i18n="pole.desc">Robot agricole téléopéré par Bluetooth pour la collecte de roches. CAD complet SolidWorks + analyse structurale RDM — Fs = 1.95.</p>
+          <div class="flex flex-wrap gap-1.5 mb-5">
+            <span class="chip" style="border-color:rgba(52,211,153,.22);background:rgba(52,211,153,.07);color:#6ee7b7">SolidWorks</span>
+            <span class="chip" style="border-color:rgba(52,211,153,.22);background:rgba(52,211,153,.07);color:#6ee7b7">CATIA</span>
+            <span class="chip" style="border-color:rgba(52,211,153,.22);background:rgba(52,211,153,.07);color:#6ee7b7">Arduino</span>
+            <span class="chip" style="border-color:rgba(52,211,153,.22);background:rgba(52,211,153,.07);color:#6ee7b7">RDM</span>
+          </div>
+          <div class="grid grid-cols-3 gap-3 pt-4" style="border-top:1px solid rgba(255,255,255,.12)">
+            <div><p class="text-lg font-grotesk font-bold text-emerald-400">1.95</p><p class="text-xs text-slate-500" data-i18n="pole.m1">Coeff. sécurité</p></div>
+            <div><p class="text-lg font-grotesk font-bold text-emerald-400">1.2 kg</p><p class="text-xs text-slate-500" data-i18n="pole.m2">Masse totale</p></div>
+            <div><p class="text-lg font-grotesk font-bold text-emerald-400">6V DC</p><p class="text-xs text-slate-500" data-i18n="pole.m3">Alimentation</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NeuroSound -->
+      <div class="pcard rv will-reveal rounded-2xl hover:border-violet-400 overflow-hidden"
+           style="background:#2d5a8e;border:1px solid #3b72b0;transition-delay:.2s"
+           onclick="openModal('neurosound')">
+        <div class="relative h-48 overflow-hidden">
+          <img src="Portfolio/Neurosound/ns_01_landing.png" alt="NeuroSound dashboard"
+               class="w-full h-full object-cover transition-transform duration-500" />
+          <div class="pcard-overlay absolute inset-0 bg-violet-950/80 flex items-center justify-center backdrop-blur-sm">
+            <span class="font-mono text-violet-300 text-sm border border-violet-500 px-4 py-2 rounded-lg" data-i18n="projects.see">Voir les détails →</span>
+          </div>
+          <div class="absolute top-3 right-3 chip" style="border-color:rgba(167,139,250,.3);background:rgba(0,0,0,.5);color:#c4b5fd;backdrop-filter:blur(8px)">IA · Web</div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-grotesk font-bold text-xl text-white mb-2">NeuroSound</h3>
+          <p class="text-sm mb-4 leading-relaxed" style="color:#bae6fd" data-i18n="ns.desc">Plateforme de classification acoustique sur 50 classes ESC-50. EfficientNetB3 + YAMNet, API FastAPI, historique SQLite.</p>
+          <div class="flex flex-wrap gap-1.5 mb-5">
+            <span class="chip" style="border-color:rgba(167,139,250,.22);background:rgba(167,139,250,.07);color:#c4b5fd">PyTorch</span>
+            <span class="chip" style="border-color:rgba(167,139,250,.22);background:rgba(167,139,250,.07);color:#c4b5fd">FastAPI</span>
+            <span class="chip" style="border-color:rgba(167,139,250,.22);background:rgba(167,139,250,.07);color:#c4b5fd">EfficientNetB3</span>
+            <span class="chip" style="border-color:rgba(167,139,250,.22);background:rgba(167,139,250,.07);color:#c4b5fd">YAMNet</span>
+          </div>
+          <div class="grid grid-cols-3 gap-3 pt-4" style="border-top:1px solid rgba(255,255,255,.12)">
+            <div><p class="text-lg font-grotesk font-bold text-violet-400">93.34%</p><p class="text-xs text-slate-500" data-i18n="ns.m1">EfficientNetB3</p></div>
+            <div><p class="text-lg font-grotesk font-bold text-violet-400">88.5%</p><p class="text-xs text-slate-500" data-i18n="ns.m2">YAMNet</p></div>
+            <div><p class="text-lg font-grotesk font-bold text-violet-400">50</p><p class="text-xs text-slate-500" data-i18n="ns.m3">Classes</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HarmoniQ -->
+      <div class="pcard rv will-reveal rounded-2xl hover:border-amber-400 overflow-hidden"
+           style="background:#2d5a8e;border:1px solid #3b72b0;transition-delay:.3s"
+           onclick="openModal('harmoniq')">
+        <div class="relative h-48 overflow-hidden bg-gradient-to-br from-slate-900 via-amber-950/30 to-sky-950/40 flex items-center justify-center">
+          <div class="text-center">
+            <div class="w-16 h-16 rounded-2xl mx-auto mb-3 flex items-center justify-center" style="background:linear-gradient(135deg,#f59e0b,#0ea5e9)">
+              <i class="fa-solid fa-bolt text-2xl text-white"></i>
+            </div>
+            <p class="font-grotesk font-bold text-white tracking-[.2em] text-sm">HARMONIQ</p>
+            <p class="font-mono text-xs text-slate-500 mt-1">Hydro-Québec</p>
+          </div>
+          <div class="pcard-overlay absolute inset-0 bg-amber-950/80 flex items-center justify-center backdrop-blur-sm">
+            <span class="font-mono text-amber-300 text-sm border border-amber-500 px-4 py-2 rounded-lg" data-i18n="projects.see">Voir les détails →</span>
+          </div>
+          <div class="absolute top-3 right-3 chip" style="border-color:rgba(251,191,36,.3);background:rgba(0,0,0,.5);color:#fde68a;backdrop-filter:blur(8px)">Énergie · Python</div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-grotesk font-bold text-xl text-white mb-2">HarmoniQ</h3>
+          <p class="text-sm mb-4 leading-relaxed" style="color:#bae6fd" data-i18n="hq.desc">Simulateur de réseau électrique pour Hydro-Québec. Modules hydro, éolien, solaire sur 30+ bassins versants réels HQ.</p>
+          <div class="flex flex-wrap gap-1.5 mb-5">
+            <span class="chip" style="border-color:rgba(251,191,36,.22);background:rgba(251,191,36,.07);color:#fde68a">Python</span>
+            <span class="chip" style="border-color:rgba(251,191,36,.22);background:rgba(251,191,36,.07);color:#fde68a">SQLite</span>
+            <span class="chip" style="border-color:rgba(251,191,36,.22);background:rgba(251,191,36,.07);color:#fde68a">Hydro-Québec</span>
+          </div>
+          <div class="grid grid-cols-3 gap-3 pt-4" style="border-top:1px solid rgba(255,255,255,.12)">
+            <div><p class="text-lg font-grotesk font-bold text-amber-400">30+</p><p class="text-xs text-slate-500" data-i18n="hq.m1">Bassins versants</p></div>
+            <div><p class="text-lg font-grotesk font-bold text-amber-400">4</p><p class="text-xs text-slate-500" data-i18n="hq.m2">Sources énergie</p></div>
+            <div><p class="text-lg font-grotesk font-bold text-amber-400">HQ</p><p class="text-xs text-slate-500" data-i18n="hq.m3">Partenaire</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     EXPÉRIENCE
+══════════════════════════════════════ -->
+<section id="experience" class="py-24" style="background-color:#E8F4FE;border-top:1px solid rgba(30,58,95,.25)">
+  <div class="max-w-6xl mx-auto px-5">
+
+    <div class="mb-14 rv will-reveal">
+      <p class="slabel text-sky-400 mb-2" data-i18n="exp.label">// Expérience & formation</p>
+      <h2 class="font-grotesk font-bold text-3xl sm:text-4xl text-slate-800" data-i18n="exp.title">Parcours</h2>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+
+      <!-- Stage -->
+      <div class="rv will-reveal flex flex-col">
+        <p class="slabel text-slate-500 mb-6" data-i18n="exp.intern.label">Stage professionnel</p>
+        <div class="relative pl-6 flex-1" style="border-left:2px solid rgba(30,58,95,.3)">
+          <div class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-sky-400 tdot"></div>
+          <div class="p-5 rounded-2xl border hover:border-sky-400 transition-colors ml-2 h-full" style="background:#2d5a8e;border:1px solid #3b72b0">
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <div>
+                <p class="font-grotesk font-bold text-slate-800">Neptronic</p>
+                <p class="text-sm text-slate-600" data-i18n="exp.intern.role">Stagiaire en ingénierie mécanique</p>
+              </div>
+              <span class="chip shrink-0" style="border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.12);color:#e0f2fe">2023–2024</span>
+            </div>
+            <p class="text-xs text-slate-500 mb-3 font-mono"><i class="fa-solid fa-location-dot mr-1"></i>Montréal, QC</p>
+            <p class="text-sm text-slate-600 leading-relaxed mb-4" data-i18n="exp.intern.desc">
+              Neptronic est spécialisée dans les systèmes de contrôle d'humidité, de température et de qualité de l'air pour applications industrielles et commerciales.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              <span class="chip" style="border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.12);color:#e0f2fe">CAD</span><span class="chip" style="border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.12);color:#e0f2fe">Simulation</span><span class="chip" style="border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.12);color:#e0f2fe" data-i18n="chip.mech">Mécanique</span>
+            </div>
+            <button onclick="openNeptronicModal()" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-sky-400 hover:border-sky-500 text-sky-500 hover:text-sky-600 text-xs font-mono rounded-lg transition-all" data-i18n="exp.intern.btn">
+              ↗ Voir les livrables
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formation -->
+      <div class="rv will-reveal flex flex-col" style="transition-delay:.12s">
+        <p class="slabel text-slate-500 mb-6" data-i18n="exp.edu.label">Formation académique</p>
+        <div class="relative pl-6 flex-1" style="border-left:2px solid rgba(30,58,95,.3)">
+          <div class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-violet-400"></div>
+          <div class="p-5 rounded-2xl border hover:border-violet-400 transition-colors ml-2 h-full" style="background:#2d5a8e;border:1px solid #3b72b0">
+            <div class="flex items-start justify-between gap-2 mb-3">
+              <div>
+                <p class="font-grotesk font-bold text-slate-800">Polytechnique Montréal</p>
+                <p class="text-sm text-slate-600" data-i18n="exp.edu.degree">Baccalauréat en génie mécanique · Diplômé mai 2026</p>
+              </div>
+              <span class="chip shrink-0" style="border-color:rgba(167,139,250,.45);background:rgba(167,139,250,.18);color:#e9d5ff">2020–2026 ✓</span>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed mb-4" data-i18n="exp.edu.desc">
+              Mécanique des solides, dynamique des fluides, méthodes numériques, transfert de chaleur, mécanismes et dynamique des machines, résistance des matériaux, conception mécanique.
+            </p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="chip" style="border-color:rgba(167,139,250,.45);background:rgba(167,139,250,.18);color:#e9d5ff" data-i18n="chip.solid">Mécanique des solides</span>
+              <span class="chip" style="border-color:rgba(167,139,250,.45);background:rgba(167,139,250,.18);color:#e9d5ff" data-i18n="chip.fluid">Dynamique des fluides</span>
+              <span class="chip" style="border-color:rgba(167,139,250,.45);background:rgba(167,139,250,.18);color:#e9d5ff" data-i18n="chip.num">Méthodes numériques</span>
+              <span class="chip" style="border-color:rgba(167,139,250,.45);background:rgba(167,139,250,.18);color:#e9d5ff" data-i18n="chip.heat">Transfert de chaleur</span>
+              <span class="chip" style="border-color:rgba(167,139,250,.45);background:rgba(167,139,250,.18);color:#e9d5ff" data-i18n="chip.mech2">Mécanismes & dynamique</span>
+              <span class="chip" style="border-color:rgba(167,139,250,.45);background:rgba(167,139,250,.18);color:#e9d5ff" data-i18n="chip.rdm">Résistance des matériaux</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     CONTACT
+══════════════════════════════════════ -->
+<section id="contact" class="py-24" style="background-color:#E8F4FE;border-top:1px solid rgba(30,58,95,.25)">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-stretch">
+
+      <div class="rv will-reveal flex flex-col">
+        <p class="slabel text-sky-400 mb-2" data-i18n="contact.label">// Contact</p>
+        <h2 class="font-grotesk font-bold text-3xl sm:text-4xl text-slate-800 mb-6" data-i18n="contact.title">Travaillons<br/>ensemble</h2>
+        <p class="text-slate-600 leading-relaxed mb-10 max-w-md" data-i18n="contact.desc">
+          Ouvert aux opportunités en simulation numérique, IA appliquée à l'ingénierie, ou mécatronique. Réponse sous 24h.
+        </p>
+        <div class="space-y-3 flex-1">
+          <a href="mailto:amaurytchoupe01@gmail.com"
+             class="flex items-center gap-4 p-4 rounded-xl border hover:border-sky-500 transition-colors group" style="background:#2d5a8e;border:1px solid #3b72b0">
+            <div class="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
+              <i class="fa-solid fa-envelope text-sky-200 text-sm"></i></div>
+            <div>
+              <p class="text-xs text-slate-500 font-mono uppercase tracking-wider mb-0.5">Email</p>
+              <p class="text-sm text-slate-800">amaurytchoupe01@gmail.com</p>
+            </div>
+          </a>
+          <a href="https://www.linkedin.com/in/amaury-tchoupe-3b24ab190/" target="_blank" rel="noopener"
+             class="flex items-center gap-4 p-4 rounded-xl border hover:border-sky-500 transition-colors" style="background:#2d5a8e;border:1px solid #3b72b0">
+            <div class="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
+              <i class="fa-brands fa-linkedin text-sky-200 text-sm"></i></div>
+            <div>
+              <p class="text-xs text-slate-500 font-mono uppercase tracking-wider mb-0.5">LinkedIn</p>
+              <p class="text-sm text-slate-800">AMAURY TCHOUPE</p>
+            </div>
+          </a>
+          <a href="https://github.com/Brivell" target="_blank" rel="noopener"
+             class="flex items-center gap-4 p-4 rounded-xl border hover:border-sky-500 transition-colors" style="background:#2d5a8e;border:1px solid #3b72b0">
+            <div class="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
+              <i class="fa-brands fa-github text-white/70 text-sm"></i></div>
+            <div>
+              <p class="text-xs text-slate-500 font-mono uppercase tracking-wider mb-0.5">GitHub</p>
+              <p class="text-sm text-slate-800" data-i18n="contact.gh.text">Voir mes dépôts</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="rv will-reveal flex flex-col" style="transition-delay:.12s">
+        <form onsubmit="handleContact(event)"
+              class="p-7 rounded-2xl border space-y-5 flex-1" style="background:#2d5a8e;border:1px solid #3b72b0">
+          <div>
+            <label class="block text-xs font-mono uppercase tracking-widest text-slate-500 mb-2" data-i18n="form.name">Nom</label>
+            <input type="text" required placeholder="Jean Dupont" data-i18n-ph="form.ph.name"
+                   class="finput w-full px-4 py-3 rounded-xl text-slate-800 text-sm placeholder:text-slate-400" style="border:1px solid #bfdbfe;background:white" />
+          </div>
+          <div>
+            <label class="block text-xs font-mono uppercase tracking-widest text-slate-500 mb-2" data-i18n="form.email">Email</label>
+            <input type="email" required placeholder="jean@entreprise.com" data-i18n-ph="form.ph.email"
+                   class="finput w-full px-4 py-3 rounded-xl text-slate-800 text-sm placeholder:text-slate-400" style="border:1px solid #bfdbfe;background:white" />
+          </div>
+          <div>
+            <label class="block text-xs font-mono uppercase tracking-widest text-slate-500 mb-2" data-i18n="form.message">Message</label>
+            <textarea rows="4" required placeholder="Votre message..." data-i18n-ph="form.ph.msg"
+                      class="finput w-full px-4 py-3 rounded-xl text-slate-800 text-sm placeholder:text-slate-400 resize-none" style="border:1px solid #bfdbfe;background:white"></textarea>
+          </div>
+          <div class="flex gap-3 pt-1">
+            <button type="submit"
+                    class="flex-1 py-3 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-xl transition-all text-sm shadow-lg shadow-sky-500/30">
+              <span data-i18n="form.send">Envoyer</span> <i class="fa-solid fa-paper-plane ml-1 text-xs"></i>
+            </button>
+            <a href="cv_amaury_tchoupe_v3.pdf" download="cv_amaury_tchoupe.pdf"
+               class="px-4 py-3 border border-white/40 hover:border-white text-white/70 hover:text-white font-semibold rounded-xl transition-all text-sm flex items-center gap-1.5">
+              <i class="fa-solid fa-download text-xs"></i> CV
+            </a>
+          </div>
+          <div id="formOk" class="hidden text-center py-1 text-sm text-emerald-400 font-mono" data-i18n="form.ok">✓ Message transmis !</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     MODAL NEPTRONIC
+══════════════════════════════════════ -->
+<div id="neptronic-modal"
+     class="fixed inset-0 z-[999] flex items-start justify-center bg-black/75 backdrop-blur-sm overflow-y-auto p-4 pt-12 pb-12"
+     style="display:none"
+     onclick="closeNeptronicOvl(event)">
+  <div id="nbox" class="w-full max-w-3xl bg-slate-900 rounded-2xl border border-slate-700 shadow-2xl overflow-hidden"
+       style="transform:translateY(24px) scale(.97);opacity:0;transition:transform .35s ease,opacity .35s ease">
+
+    <!-- Sticky header -->
+    <div class="flex items-center justify-between px-7 py-5 border-b border-slate-800 sticky top-0 bg-slate-900 z-10">
+      <div>
+        <p class="slabel text-sky-400 mb-1" data-i18n="nept.header.label">// Livrables du stage</p>
+        <h2 class="font-grotesk font-bold text-xl text-white" data-i18n="nept.header.title">Neptronic — Projets réalisés</h2>
+      </div>
+      <button onclick="closeNeptronicModal()"
+              class="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="p-7 space-y-10">
+
+      <!-- Projet 1 : Volet 20×20 -->
+      <div>
+        <h3 class="font-grotesk font-bold text-white border-l-2 border-sky-400 pl-4 mb-5" data-i18n="nept.p1.title">01 — Modèle de volet 20×20</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+          <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+            <p class="slabel text-sky-400 mb-2" data-i18n="nept.goal">But</p>
+            <p class="text-sm text-slate-300 leading-relaxed" data-i18n="nept.p1.goal">Modélisation d'un volet d'entrée d'air pour diffusion d'humidité</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+            <p class="slabel text-sky-400 mb-2" data-i18n="nept.resources">Ressources</p>
+            <p class="text-sm text-slate-300 leading-relaxed" data-i18n="nept.p1.resources">Autodesk Inventor, analyse données CFD via Excel</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+            <p class="slabel text-sky-400 mb-2" data-i18n="nept.results">Résultats</p>
+            <p class="text-sm text-slate-300 leading-relaxed" data-i18n="nept.p1.results">Capacité d'entrée d'air conforme aux exigences</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="rounded-xl overflow-hidden border border-slate-700 aspect-[4/3] bg-slate-800 flex items-center justify-center">
+            <img src="Site portfolio/public/assets/neptronic/volet-ferme.png" alt="Volet fermé" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\'font-mono text-xs text-slate-500 text-center p-3\'>Volet fermé</span>'" />
+          </div>
+          <div class="rounded-xl overflow-hidden border border-slate-700 aspect-[4/3] bg-slate-800 flex items-center justify-center">
+            <img src="Site portfolio/public/assets/neptronic/volet-ouvert.png" alt="Volet ouvert" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\'font-mono text-xs text-slate-500 text-center p-3\'>Volet ouvert</span>'" />
+          </div>
+          <div class="rounded-xl overflow-hidden border border-slate-700 aspect-[4/3] bg-slate-800 flex items-center justify-center">
+            <img src="Site portfolio/public/assets/neptronic/volet-iso.png" alt="Vue isométrique" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\'font-mono text-xs text-slate-500 text-center p-3\'>Vue isométrique</span>'" />
+          </div>
+        </div>
+      </div>
+
+      <div class="h-px bg-slate-800"></div>
+
+      <!-- Projet 2 : PCB humidificateur -->
+      <div>
+        <h3 class="font-grotesk font-bold text-white border-l-2 border-sky-400 pl-4 mb-5" data-i18n="nept.p2.title">02 — Système de contrôle PCB humidificateur</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+          <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+            <p class="slabel text-sky-400 mb-2" data-i18n="nept.goal">But</p>
+            <p class="text-sm text-slate-300 leading-relaxed" data-i18n="nept.p2.goal">Modélisation de pièces PCB pour gestion d'humidité</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+            <p class="slabel text-sky-400 mb-2" data-i18n="nept.resources">Ressources</p>
+            <p class="text-sm text-slate-300 leading-relaxed" data-i18n="nept.p2.resources">Autodesk Inventor</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+            <p class="slabel text-sky-400 mb-2" data-i18n="nept.results">Résultats</p>
+            <p class="text-sm text-slate-300 leading-relaxed" data-i18n="nept.p2.results">Température contrôlée entre 20–24°C, assemblage effectif à 90%</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="rounded-xl overflow-hidden border border-slate-700 aspect-[4/3] bg-slate-800 flex items-center justify-center">
+            <img src="Site portfolio/public/assets/neptronic/pcb-plateforme.png" alt="PCB plateforme" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\'font-mono text-xs text-slate-500 text-center p-3\'>PCB plateforme</span>'" />
+          </div>
+          <div class="rounded-xl overflow-hidden border border-slate-700 aspect-[4/3] bg-slate-800 flex items-center justify-center">
+            <img src="Site portfolio/public/assets/neptronic/pcb-reseau.png" alt="PCB réseau" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\'font-mono text-xs text-slate-500 text-center p-3\'>PCB réseau</span>'" />
+          </div>
+          <div class="rounded-xl overflow-hidden border border-slate-700 aspect-[4/3] bg-slate-800 flex items-center justify-center">
+            <img src="Site portfolio/public/assets/neptronic/pcb-assemblage.png" alt="PCB assemblage" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\'font-mono text-xs text-slate-500 text-center p-3\'>PCB assemblage</span>'" />
+          </div>
+        </div>
+      </div>
+
+      <div class="h-px bg-slate-800"></div>
+
+      <!-- Projet 3 : Actuateurs -->
+      <div>
+        <h3 class="font-grotesk font-bold text-white border-l-2 border-sky-400 pl-4 mb-5" data-i18n="nept.p3.title">03 — Pièces pour actuateurs</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+          <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+            <p class="slabel text-sky-400 mb-2" data-i18n="nept.goal">But</p>
+            <p class="text-sm text-slate-300 leading-relaxed" data-i18n="nept.p3.goal">Manivelle (50 in.lbs) + support de fixation pour valve d'entrée d'air</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+            <p class="slabel text-sky-400 mb-2" data-i18n="nept.resources">Ressources</p>
+            <p class="text-sm text-slate-300 leading-relaxed" data-i18n="nept.p3.resources">Autodesk Inventor, analyse dimensionnelle Excel</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+            <p class="slabel text-sky-400 mb-2" data-i18n="nept.results">Résultats</p>
+            <p class="text-sm text-slate-300 leading-relaxed" data-i18n="nept.p3.results">Torque de 40 in.lbs (80%), support parfaitement ajusté</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="rounded-xl overflow-hidden border border-slate-700 aspect-[4/3] bg-slate-800 flex items-center justify-center">
+            <img src="Site portfolio/public/assets/neptronic/rain-hood.png" alt="Rain hood" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\'font-mono text-xs text-slate-500 text-center p-3\'>Rain hood</span>'" />
+          </div>
+          <div class="rounded-xl overflow-hidden border border-slate-700 aspect-[4/3] bg-slate-800 flex items-center justify-center">
+            <img src="Site portfolio/public/assets/neptronic/manivelle.png" alt="Manivelle" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\'font-mono text-xs text-slate-500 text-center p-3\'>Manivelle</span>'" />
+          </div>
+          <div class="rounded-xl overflow-hidden border border-slate-700 aspect-[4/3] bg-slate-800 flex items-center justify-center">
+            <img src="Site portfolio/public/assets/neptronic/support-fixation.png" alt="Support de fixation" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\'font-mono text-xs text-slate-500 text-center p-3\'>Support fixation</span>'" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Footer -->
+<footer class="py-7" style="border-top:1px solid rgba(30,58,95,.25)">
+  <div class="max-w-6xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <p class="text-xs font-mono" style="color:#3b82f6" data-i18n="footer">© 2026 AMAURY TCHOUPE · CPI · Polytechnique Montréal</p>
+    <div class="flex gap-4">
+      <a href="https://github.com/Brivell"  target="_blank" class="transition-colors" style="color:#3b82f6" onmouseover="this.style.color='#0ea5e9'" onmouseout="this.style.color='#3b82f6'"><i class="fa-brands fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/amaury-tchoupe-3b24ab190/" target="_blank" class="transition-colors" style="color:#3b82f6" onmouseover="this.style.color='#0ea5e9'" onmouseout="this.style.color='#3b82f6'"><i class="fa-brands fa-linkedin"></i></a>
+      <a href="mailto:amaurytchoupe01@gmail.com" class="transition-colors" style="color:#3b82f6" onmouseover="this.style.color='#0ea5e9'" onmouseout="this.style.color='#3b82f6'"><i class="fa-solid fa-envelope"></i></a>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════
+     MODAL
+══════════════════════════════════════ -->
+<div id="modal"
+     class="fixed inset-0 z-[999] flex items-start justify-center bg-black/75 backdrop-blur-sm overflow-y-auto p-4 pt-12 pb-12"
+     onclick="closeOvl(event)">
+  <div id="mbox" class="w-full max-w-2xl bg-slate-900 rounded-2xl border border-slate-700 shadow-2xl overflow-hidden">
+    <button onclick="closeModal()"
+            class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+      <i class="fa-solid fa-xmark text-sm"></i></button>
+
+    <div id="mCover" class="h-52 overflow-hidden"></div>
+
+    <div class="p-8">
+      <div class="flex flex-wrap items-center gap-2 mb-2">
+        <span id="mBadge" class="chip text-xs"></span>
+      </div>
+      <h2 id="mTitle" class="font-grotesk font-bold text-2xl text-white mb-1.5"></h2>
+      <p id="mTagline" class="font-mono text-sky-400 text-sm mb-5"></p>
+      <div id="mTags" class="flex flex-wrap gap-1.5 mb-7"></div>
+      <div class="h-px bg-slate-800 mb-7"></div>
+
+      <div class="mb-6">
+        <p class="slabel text-sky-400 mb-3" data-i18n="modal.context">// Contexte & problème</p>
+        <p id="mContext" class="text-slate-400 text-sm leading-relaxed"></p>
+      </div>
+      <div class="mb-6">
+        <p class="slabel text-sky-400 mb-3" data-i18n="modal.approach">// Approche & méthodologie</p>
+        <p id="mApproach" class="text-slate-400 text-sm leading-relaxed"></p>
+      </div>
+      <div class="mb-7">
+        <p class="slabel text-sky-400 mb-3" data-i18n="modal.results">// Résultats clés</p>
+        <div id="mMetrics" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+      </div>
+      <div class="mb-6">
+        <p class="slabel text-sky-400 mb-3" data-i18n="modal.learnings">// Ce que j'ai appris</p>
+        <p id="mLearnings" class="text-slate-400 text-sm leading-relaxed italic"></p>
+      </div>
+      <div id="mExtraWrap" class="mb-7 hidden">
+        <p class="slabel text-sky-400 mb-3" data-i18n="modal.extra">// Aperçu supplémentaire</p>
+        <div class="rounded-xl overflow-hidden border border-slate-700">
+          <img id="mExtra" src="" alt="" class="w-full" /></div>
+      </div>
+      <div id="mGalleryWrap" class="mb-7 hidden">
+        <p class="slabel text-sky-400 mb-3" data-i18n="modal.gallery">// Aperçus du projet</p>
+        <div id="mGallery" class="grid grid-cols-1 gap-5"></div>
+      </div>
+      <div class="pt-6 border-t border-slate-800">
+        <p class="slabel text-sky-400 mb-3" data-i18n="modal.links">// Liens</p>
+        <div id="mLinks" class="flex flex-wrap gap-3"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════ -->
+<script>
+// ══ PROJECT DATA ══════════════════════════════════════════════════════════════
+const DATA = {
+  tps: {
+    title:'TPS Thermal Surrogate', badge:'Simulation · IA',
+    tagline:'Pipeline FEM→ML · Protection thermique · Rentrée atmosphérique · GCH2545',
+    cover:'Portfolio/TPS_simulation_final/benchmark_gp_vs_mlp.png',
+    extra:'',
+    gallery:[
+      {src:'Portfolio/TPS_simulation_final/benchmark_gp_vs_mlp.png', caption:'Parité FEM vs surrogates — GP (MAE=0°C ±2σ) et MLP (MAE=13°C) sur 100 points de test, avec erreur relative en fonction de T_max.'},
+      {src:'Portfolio/TPS_simulation_final/validate_comsol_summary.png', caption:'Résumé validation COMSOL — R² et MAE comparés entre FDM, MEF et modèle de substitution pour variation de k et q_max.'},
+      {src:'Portfolio/TPS_simulation_final/validate_comsol_variation_k.png', caption:'Validation variation k — T_max en fonction de la conductivité thermique : FDM, MEF et surrogate comparés à la référence COMSOL.'},
+    ],
+    accent:'#38bdf8',
+    tags:['COMSOL','Python','NumPy','scikit-learn','GP (Gaussian Process)','MLP','FDM','FEM','Streamlit','Plotly'],
+    context:'Simuler la rentrée atmosphérique d\'un véhicule spatial prend des heures de calcul éléments finis — trop lent pour explorer un espace de design en temps réel. Pourtant, des décisions critiques dépendent de ces simulations : épaisseur du bouclier thermique, choix du matériau, géométrie de la protection. Une erreur de quelques millimètres peut signifier l\'échec de toute la mission.',
+    approach:'Plutôt que d\'optimiser le solveur FEM, j\'ai cherché à le remplacer entièrement pour les usages d\'exploration rapide. L\'idée : générer 500 simulations haute-fidélité sous COMSOL, puis entraîner deux modèles ML — un MLP pour reconstruire le champ complet T(x,y,t), et un Gaussian Process pour prédire T_max avec incertitude calibrée. Le GP a été choisi précisément parce qu\'il quantifie son incertitude, un critère non-négociable en validation aérospatiale.',
+    learnings:'La valeur d\'un modèle de substitution ne se mesure pas à sa précision brute — elle se mesure à la confiance qu\'il permet d\'accorder aux décisions de conception. Quantifier l\'incertitude est aussi important que minimiser l\'erreur.',
+    metrics:[
+      {val:'0.03%',label:'Erreur GP vs FEM'},
+      {val:'100 000×',label:'Accélération GP'},
+      {val:'R²=0.9999',label:'R² GP scalaire'},
+      {val:'500',label:'Simulations FEM'},
+      {val:'~9%',label:'Erreur MLP champ'},
+      {val:'600×',label:'Accélération MLP'},
+      {val:'R²=0.9875',label:'R² MLP T(x,y,t)'},
+      {val:'293k×',label:'Speedup max GP'},
+    ],
+    links:[
+      {label:'Live Demo',icon:'fa-solid fa-play',url:'https://tps-thermal-surrogate.streamlit.app/'},{label:'GitHub',icon:'fa-brands fa-github',url:'https://github.com/Brivell/tps-thermal-surrogate'},
+      {label:'Rapport PDF',icon:'fa-solid fa-file-pdf',url:'Portfolio/TPS_simulation_final/github/COMSOL_Report.pdf'},
+    ],
+  },
+  pole: {
+    title:'POL-E', badge:'CAD · RDM · Embarqué',
+    tagline:'Robot agricole téléopéré · Bluetooth · Polytechnique Montréal · GNG1103',
+    cover:'Portfolio/Projet2/Final_Product_Front.jpg',
+    extra:'',
+    gallery:[
+      {src:'Portfolio/Projet2/Final_Design_Side.jpg', caption:'Vue de côté du robot POL-E finalisé — boîtier HDPE ajouré, chenilles et système de fourche élévatrice.'},
+      {src:'Portfolio/Projet2/Prototype_Assembly.jpg', caption:'Prototype intermédiaire — mécanisme vis sans fin (3/8"-16 UNC), tige de guidage aluminium et fourche PLA avant intégration du boîtier final.'},
+      {src:'Portfolio/Projet2/RDM_Fork_FBD_Hypotheses.jpg', caption:'Analyse RDM — diagramme de corps libre de la fourche PLA, hypothèses de chargement et identification de la zone critique encastrée.'},
+      {src:'Portfolio/Projet2/RDM_Fork_Normal_Stress.jpg', caption:'Calcul de la contrainte normale σx = 25,35 MPa à la section critique — coefficient de sécurité Fs = 1,95 par rapport à la limite PLA (49,5 MPa).'},
+    ],
+    accent:'#34d399',
+    tags:['SolidWorks','CATIA','Arduino UNO','C++','L298N','HC-05 Bluetooth','PLA (impression 3D)','Aluminium','HDPE','RDM'],
+    context:'Les roches qui remontent à la surface dans les champs agricoles endommagent silencieusement des milliers de machines chaque saison — charrues brisées, semoirs coincés, arrêts de travail en plein pic de récolte. Pour les petits producteurs, c\'est une perte directe de revenus. Avec une équipe de quatre ingénieurs, on a décidé de s\'attaquer à ce problème avec un robot téléopéré.',
+    approach:'On aurait pu concevoir un bras hydraulique. On a choisi une vis sans fin (3/8"-16 UNC acier) pour une raison précise : fiabilité en conditions boueuses, sans fluide sous pression à gérer. Le guidage par tige aluminium assure une translation verticale pure — pas de jeu latéral, pas de porte-à-faux sur la fourche PLA. Ce principe de simplifier chaque sous-système nous a permis de construire, tester et itérer en quelques semaines.',
+    learnings:'La rigueur du calcul RDM n\'a de valeur que si elle guide un choix de conception réel. Ici, choisir le PLA plutôt que l\'acier m\'a obligé à justifier chaque millimètre de section transversale — et c\'est exactement ce que ce type d\'analyse doit produire.',
+    metrics:[
+      {val:'1.95',label:'Coeff. sécurité Fs'},
+      {val:'25.35 MPa',label:'Contrainte max σx'},
+      {val:'49.5 MPa',label:'Sy PLA (limite)'},
+      {val:'1.2 kg',label:'Masse totale'},
+      {val:'200 mm',label:'Course de levage'},
+      {val:'203×293×360',label:'Dimensions (mm)'},
+      {val:'6V DC',label:'Alimentation'},
+      {val:'Bluetooth',label:'Téléopération'},
+    ],
+    links:[
+      {label:'GitHub',icon:'fa-brands fa-github',url:'https://github.com/Brivell/pol-e'},
+{label:'Dessins techniques',icon:'fa-solid fa-drafting-compass',url:'Portfolio/Projet2/Engineering_Drawings.pdf'},
+    ],
+  },
+  neurosound: {
+    title:'NeuroSound', badge:'IA · Deep Learning · Web',
+    tagline:'Classification acoustique · ESC-50 · 50 classes · FastAPI + HTML/JS',
+    cover:'Portfolio/Neurosound/ns_01_landing.png',
+    extra:'',
+    gallery:[
+      {src:'assets/neurosound/ns_10_dashboard_result.png', caption:'Dashboard de classification — résultat YAMNet en temps réel : door_wood_creaks à 98,1 % de confiance sur 50 classes ESC-50.'},
+      {src:'assets/neurosound/ns_11_history_page.png', caption:'Page Historique — liste complète des analyses passées avec modèle utilisé, classe prédite et score de confiance.'},
+      {src:'assets/neurosound/performance_Efficienet.png', caption:'Courbes d\'entraînement EfficientNetB3 — précision et perte sur 130 époques (spectrogrammes mel), avec déclenchement de l\'affinage à l\'époque 50.'},
+      {src:'assets/neurosound/performance_Yamnet.png', caption:'Courbes d\'entraînement YAMNet (AudioSet) affiné sur ESC-50 — convergence en 45 époques, phase 2 déclenchée à l\'époque 20.'},
+    ],
+    accent:'#a78bfa',
+    tags:['PyTorch','TensorFlow/Keras','EfficientNetB3','YAMNet','FastAPI','SQLite','SQLAlchemy','Docker','HTML/CSS/JS'],
+    context:'La classification sonore automatique est un problème déceptivement difficile : un chien qui aboie dans un appartement ne ressemble pas acoustiquement au même son en plein air. Le dataset ESC-50 — 50 classes, 2000 clips — est un benchmark standard, mais le dépasser exige une architecture qui comprend la structure fréquentielle du son, pas seulement sa forme temporelle.',
+    approach:'J\'ai implémenté deux pipelines indépendants pour comparer deux philosophies. EfficientNetB3 + attention multi-têtes traite des spectrogrammes comme des images : du transfert d\'apprentissage visuel appliqué à l\'acoustique. YAMNet de Google, pré-entraîné sur 2 millions de clips AudioSet, est fine-tuné directement sur ESC-50. L\'architecture FastAPI avec persistance SQLite permet de soumettre les mêmes fichiers aux deux modèles en production et de comparer leurs prédictions.',
+    learnings:'Le transfert d\'apprentissage cross-domaine n\'est pas un hack — c\'est une stratégie valide quand la représentation intermédiaire encode correctement la physique du signal. Le spectrogramme est cette représentation.',
+    metrics:[
+      {val:'93.34%',label:'Précision EfficientNetB3'},
+      {val:'88.5%',label:'Précision YAMNet'},
+      {val:'50',label:'Classes ESC-50'},
+      {val:'2',label:'Modèles DL'},
+    ],
+    links:[{label:'Live Demo',icon:'fa-solid fa-play',url:'https://brivell.github.io/neurosound-app/'},{label:'GitHub',icon:'fa-brands fa-github',url:'https://github.com/Brivell/neurosound'}],
+  },
+  harmoniq: {
+    title:'HarmoniQ', badge:'Énergie · Simulation · Python',
+    tagline:'Simulateur réseau électrique · Hydro-Québec · Hydro · Éolien · Solaire · Thermique',
+    cover:'',
+    extra:'',
+    accent:'#fbbf24',
+    tags:['Python','SQLite','SQLAlchemy','Pandas','NumPy','Hydro-Québec','SAM Sandia','Wind Turbine DB'],
+    context:'Hydro-Québec exploite l\'un des réseaux électriques les plus complexes au monde : 63 barrages, des parcs éoliens qui varient au gré des saisons, et une demande résidentielle qui pic en plein hiver canadien. Simuler le dispatch optimal de ces sources hétérogènes — chacune avec ses propres contraintes physiques et économiques — est un défi de modélisation que peu d\'outils génériques savent gérer.',
+    approach:'On a conçu HarmoniQ comme un package Python modulaire : chaque source d\'énergie est un module indépendant avec son propre modèle physique. Le module hydro intègre les données réelles d\'apport naturel de 30+ bassins versants HQ (débits historiques CSV). Le module éolien s\'appuie sur Wind Turbine Database, et le module solaire sur la librairie SAM de Sandia National Laboratories. SQLAlchemy sert de couche de persistance unifiée pour tous les résultats de simulation.',
+    learnings:'Travailler avec un partenaire industriel réel m\'a appris que la qualité des données d\'entrée est souvent le facteur limitant — les débits historiques et les courbes de puissance réelles révèlent des comportements qu\'aucun modèle synthétique n\'anticipe.',
+    metrics:[
+      {val:'30+',label:'Bassins versants HQ'},
+      {val:'4',label:'Types de sources'},
+      {val:'SQLite',label:'Persistance données'},
+      {val:'Python',label:'Stack principal'},
+    ],
+    links:[{label:'GitHub',icon:'fa-brands fa-github',url:'https://github.com/Brivell/harmoniq'}],
+  },
+};
+
+// ══ EN MODAL DATA ═════════════════════════════════════════════════════════════
+const DATA_EN = {
+  tps: {
+    badge:'Simulation · AI',
+    tagline:'FEM→ML Pipeline · Thermal Protection · Atmospheric Reentry · GCH2545',
+    context:'Simulating atmospheric reentry takes hours of finite element computation — too slow for real-time design exploration. Yet critical decisions depend on these simulations: heat shield thickness, material selection, protection geometry. A millimeter-level error could mean mission failure.',
+    approach:"Rather than optimizing the FEM solver, I sought to replace it entirely for rapid exploration: generate 500 high-fidelity COMSOL simulations, then train two ML models — an MLP to reconstruct the full T(x,y,t) field, and a Gaussian Process to predict T_max with calibrated uncertainty. GP was chosen precisely because it quantifies uncertainty — a non-negotiable criterion in aerospace validation.",
+    learnings:"A surrogate model's value isn't measured by raw accuracy — it's measured by the confidence it enables in design decisions. Quantifying uncertainty is as important as minimizing error.",
+    metrics:[
+      {val:'0.03%',label:'GP Error vs FEM'},{val:'100,000×',label:'GP Speedup'},
+      {val:'R²=0.9999',label:'GP R² scalar'},{val:'500',label:'FEM Simulations'},
+      {val:'~9%',label:'MLP field error'},{val:'600×',label:'MLP Speedup'},
+      {val:'R²=0.9875',label:'MLP R² T(x,y,t)'},{val:'293k×',label:'Max GP speedup'},
+    ],
+    gallery:[
+      {src:'Portfolio/TPS_simulation_final/benchmark_gp_vs_mlp.png', caption:'FEM vs surrogate parity — GP (MAE=0°C ±2σ) and MLP (MAE=13°C) on 100 test points, with relative error vs T_max.'},
+      {src:'Portfolio/TPS_simulation_final/validate_comsol_summary.png', caption:'COMSOL validation summary — R² and MAE compared between FDM, FEM and surrogate model for k and q_max variation.'},
+      {src:'Portfolio/TPS_simulation_final/validate_comsol_variation_k.png', caption:'k variation validation — T_max vs thermal conductivity: FDM, FEM and surrogate compared against COMSOL reference.'},
+    ],
+    links:[
+      {label:'Live Demo',icon:'fa-solid fa-play',url:'https://tps-thermal-surrogate.streamlit.app/'},
+      {label:'GitHub',icon:'fa-brands fa-github',url:'https://github.com/Brivell/tps-thermal-surrogate'},
+      {label:'PDF Report',icon:'fa-solid fa-file-pdf',url:'Portfolio/TPS_simulation_final/github/COMSOL_Report.pdf'},
+    ],
+  },
+  pole: {
+    badge:'CAD · Structural · Embedded',
+    tagline:'Teleoperated Robot · Bluetooth · Polytechnique Montréal · GNG1103',
+    context:"Rocks surfacing in agricultural fields silently damage thousands of machines every season — broken plows, jammed seeders, work stoppages at peak harvest. For small producers, this is direct revenue loss. With a four-engineer team, we decided to tackle this problem with a teleoperated robot.",
+    approach:'We could have designed a hydraulic arm. We chose a lead screw (3/8"-16 UNC steel) for one reason: reliability in muddy conditions, without pressurized fluid to manage. Aluminum rod guidance ensures pure vertical translation — no lateral play, no overhang on the PLA fork. This principle of simplifying each subsystem let us build, test, and iterate in a few weeks.',
+    learnings:'The rigor of structural analysis only has value when it guides a real design decision. Here, choosing PLA over steel forced me to justify every millimeter of cross-section — and that is exactly what this type of analysis should produce.',
+    metrics:[
+      {val:'1.95',label:'Safety factor Fs'},{val:'25.35 MPa',label:'Max stress σx'},
+      {val:'49.5 MPa',label:'PLA yield'},{val:'1.2 kg',label:'Total mass'},
+      {val:'200 mm',label:'Lift travel'},{val:'203×293×360',label:'Dimensions (mm)'},
+      {val:'6V DC',label:'Power'},{val:'Bluetooth',label:'Teleoperation'},
+    ],
+    tags:['SolidWorks','CATIA','Arduino UNO','C++','L298N','HC-05 Bluetooth','PLA (3D printing)','Aluminum','HDPE','Structural Analysis'],
+    gallery:[
+      {src:'Portfolio/Projet2/Final_Design_Side.jpg', caption:'Side view of the finalized POL-E robot — perforated HDPE enclosure, tracks and elevator fork system.'},
+      {src:'Portfolio/Projet2/Prototype_Assembly.jpg', caption:'Intermediate prototype — lead screw mechanism (3/8"-16 UNC), aluminum guide rod and PLA fork before final enclosure integration.'},
+      {src:'Portfolio/Projet2/RDM_Fork_FBD_Hypotheses.jpg', caption:'Structural analysis — free body diagram of the PLA fork, load hypotheses and identification of the critical clamped section.'},
+      {src:'Portfolio/Projet2/RDM_Fork_Normal_Stress.jpg', caption:'Normal stress calculation σx = 25.35 MPa at the critical section — safety factor Fs = 1.95 relative to PLA yield strength (49.5 MPa).'},
+    ],
+    links:[
+      {label:'GitHub',icon:'fa-brands fa-github',url:'https://github.com/Brivell/pol-e'},
+      {label:'Technical Drawings',icon:'fa-solid fa-drafting-compass',url:'Portfolio/Projet2/Engineering_Drawings.pdf'},
+    ],
+  },
+  neurosound: {
+    badge:'AI · Deep Learning · Web',
+    tagline:'Acoustic Classification · ESC-50 · 50 classes · FastAPI + HTML/JS',
+    context:'Automatic sound classification is deceptively hard: a barking dog in an apartment sounds acoustically different from the same sound outdoors. The ESC-50 dataset — 50 classes, 2000 clips — is a standard benchmark, but beating it requires an architecture that understands the frequency structure of sound, not just its temporal shape.',
+    approach:"I implemented two independent pipelines to compare two philosophies. EfficientNetB3 + multi-head attention treats spectrograms as images: visual transfer learning applied to acoustics. Google's YAMNet, pre-trained on 2 million AudioSet clips, is fine-tuned directly on ESC-50. The FastAPI architecture with SQLite persistence allows submitting the same files to both models in production and comparing their predictions.",
+    learnings:"Cross-domain transfer learning isn't a hack — it's a valid strategy when the intermediate representation correctly encodes the signal's physics. The spectrogram is that representation.",
+    metrics:[
+      {val:'93.34%',label:'EfficientNetB3'},{val:'88.5%',label:'YAMNet'},
+      {val:'50',label:'ESC-50 Classes'},{val:'2',label:'DL Models'},
+    ],
+    gallery:[
+      {src:'assets/neurosound/ns_10_dashboard_result.png', caption:'Classification dashboard — YAMNet real-time result: door_wood_creaks at 98.1% confidence across 50 ESC-50 classes.'},
+      {src:'assets/neurosound/ns_11_history_page.png', caption:'History page — complete list of past analyses with model used, predicted class and confidence score.'},
+      {src:'assets/neurosound/performance_Efficienet.png', caption:'EfficientNetB3 training curves — accuracy and loss over 130 epochs (mel spectrograms), with fine-tuning triggered at epoch 50.'},
+      {src:'assets/neurosound/performance_Yamnet.png', caption:'YAMNet (AudioSet) training curves fine-tuned on ESC-50 — convergence in 45 epochs, phase 2 triggered at epoch 20.'},
+    ],
+  },
+  harmoniq: {
+    badge:'Energy · Simulation · Python',
+    tagline:'Power Grid Simulator · Hydro-Québec · Hydro · Wind · Solar · Thermal',
+    context:"Hydro-Québec operates one of the world's most complex power grids: 63 dams, wind farms that vary with the seasons, and residential demand that peaks during Canadian winter. Simulating the optimal dispatch of these heterogeneous sources — each with its own physical and economic constraints — is a modeling challenge that few generic tools handle well.",
+    approach:"We designed HarmoniQ as a modular Python package: each energy source is an independent module with its own physical model. The hydro module integrates real natural inflow data from 30+ HQ watersheds (historical CSV flow rates). The wind module uses Wind Turbine Database, and the solar module uses Sandia National Laboratories' SAM library. SQLAlchemy serves as the unified persistence layer.",
+    learnings:"Working with a real industrial partner taught me that input data quality is often the limiting factor — historical flow rates and real power curves reveal behaviors that no synthetic model anticipates.",
+    metrics:[
+      {val:'30+',label:'HQ Watersheds'},{val:'4',label:'Energy source types'},
+      {val:'SQLite',label:'Data persistence'},{val:'Python',label:'Main stack'},
+    ],
+  },
+};
+
+// ══ MODAL ═════════════════════════════════════════════════════════════════════
+function openModal(id) {
+  const p = DATA[id]; if(!p) return;
+  // Use EN translations when applicable
+  
+  const d = currentLang === 'en' && DATA_EN[id] ? {...p, ...DATA_EN[id]} : p;
+
+  const modal = document.getElementById('modal');
+
+  // Cover
+  const cov = document.getElementById('mCover');
+  if(p.cover) {
+    cov.innerHTML = `<img src="${p.cover}" alt="${p.title}" class="w-full h-full object-cover"/>`;
+    cov.style.background = '';
+  } else {
+    cov.innerHTML = `<div class="w-full h-full flex items-center justify-center" style="background:linear-gradient(135deg,#1c1917,#0f172a)"><i class="fa-solid fa-bolt text-4xl" style="color:${p.accent}"></i></div>`;
+  }
+
+  document.getElementById('mBadge').textContent = d.badge || p.badge;
+  document.getElementById('mTitle').textContent = d.title || p.title;
+  document.getElementById('mTagline').textContent = d.tagline || p.tagline;
+  document.getElementById('mTagline').style.color = d.accent || p.accent;
+  document.getElementById('mContext').textContent = d.context || p.context;
+  document.getElementById('mApproach').textContent = d.approach || p.approach;
+  document.getElementById('mLearnings').textContent = d.learnings || p.learnings || '';
+
+  document.getElementById('mTags').innerHTML = (d.tags||p.tags).map(t=>`<span class="chip">${t}</span>`).join('');
+
+  document.getElementById('mMetrics').innerHTML = (d.metrics||p.metrics).map(m=>`
+    <div class="p-3 rounded-xl bg-slate-800 border border-slate-700">
+      <p class="font-grotesk font-bold text-base" style="color:${p.accent}">${m.val}</p>
+      <p class="text-xs text-slate-500 mt-0.5">${m.label}</p>
+    </div>`).join('');
+
+  const ew = document.getElementById('mExtraWrap');
+  if(p.extra) { document.getElementById('mExtra').src = p.extra; ew.classList.remove('hidden'); }
+  else ew.classList.add('hidden');
+
+  const gw = document.getElementById('mGalleryWrap');
+  const gallery = d.gallery || p.gallery;
+  if(gallery && gallery.length) {
+    document.getElementById('mGallery').innerHTML = gallery.map(g=>`
+      <div class="rounded-xl overflow-hidden border border-slate-700">
+        <img src="${g.src}" alt="${g.caption}" class="w-full" />
+        <p class="text-xs text-slate-400 px-3 py-2 bg-slate-800/60 italic">${g.caption}</p>
+      </div>`).join('');
+    gw.classList.remove('hidden');
+  } else gw.classList.add('hidden');
+
+  document.getElementById('mLinks').innerHTML = (d.links||p.links).map(l=>`
+    <a href="${l.url}" target="_blank" rel="noopener"
+       class="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white text-sm font-semibold rounded-xl transition-colors border border-slate-700 hover:border-slate-600">
+      <i class="${l.icon} text-xs"></i>${l.label} ↗</a>`).join('');
+
+  modal.classList.add('open');
+  document.getElementById('mbox').style.transform = '';
+  document.getElementById('mbox').style.opacity = '';
+  document.body.style.overflow = 'hidden';
+  document.getElementById('modal').scrollTop = 0;
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeOvl(e) { if(e.target===document.getElementById('modal')) closeModal(); }
+// Escape handled above (covers both modals)
+
+// ══ NEPTRONIC MODAL ═══════════════════════════════════════════════════════════
+function openNeptronicModal() {
+  const modal = document.getElementById('neptronic-modal');
+  modal.style.display = 'flex';
+  requestAnimationFrame(() => {
+    document.getElementById('nbox').style.transform = '';
+    document.getElementById('nbox').style.opacity = '';
+  });
+  document.body.style.overflow = 'hidden';
+  modal.scrollTop = 0;
+}
+function closeNeptronicModal() {
+  document.getElementById('neptronic-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+function closeNeptronicOvl(e) {
+  if (e.target === document.getElementById('neptronic-modal')) closeNeptronicModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeNeptronicModal(); } });
+
+// ══ MOBILE MENU ═══════════════════════════════════════════════════════════════
+document.getElementById('mBtn').addEventListener('click',()=>{
+  document.getElementById('mmenu').classList.toggle('open');
+});
+document.querySelectorAll('#mmenu a').forEach(a=>a.addEventListener('click',()=>document.getElementById('mmenu').classList.remove('open')));
+
+// ══ SCROLL REVEAL (only for below-fold elements) ═══════════════════════════════
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('shown'); obs.unobserve(e.target); }});
+},{ threshold:0.1 });
+document.querySelectorAll('.rv.will-reveal').forEach(el=>obs.observe(el));
+
+// ══ NAVBAR SHADOW + ACTIVE SECTION ═══════════════════════════════════════════
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').style.boxShadow = window.scrollY>10 ? '0 4px 30px rgba(0,0,0,.4)' : '';
+});
+
+const navLinks = document.querySelectorAll('nav a.nl');
+const sections = ['competences','projets','experience','contact'].map(id=>document.getElementById(id));
+
+const secObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(l=>{
+        l.classList.toggle('active', l.getAttribute('href') === '#'+e.target.id);
+      });
+    }
+  });
+},{threshold:0.35});
+
+sections.forEach(s=>{ if(s) secObs.observe(s); });
+
+// ══ CONTACT FORM ══════════════════════════════════════════════════════════════
+function handleContact(e) {
+  e.preventDefault();
+  const i = e.target.querySelectorAll('input,textarea');
+  const isEn = currentLang === 'en';
+  const sub = encodeURIComponent(isEn
+    ? `Portfolio — Message from ${i[0].value}`
+    : `Portfolio — Message de ${i[0].value}`);
+  const bod = encodeURIComponent(isEn
+    ? `Name: ${i[0].value}\nEmail: ${i[1].value}\n\n${i[2].value}`
+    : `Nom: ${i[0].value}\nEmail: ${i[1].value}\n\n${i[2].value}`);
+  window.open(`mailto:amaurytchoupe01@gmail.com?subject=${sub}&body=${bod}`);
+  document.getElementById('formOk').classList.remove('hidden');
+  e.target.reset();
+}
+
+// ══ 2D HEAT SIMULATION CANVAS ═════════════════════════════════════════════════
+(function() {
+  const canvas = document.getElementById('simCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = 42, H = 30;
+  const cw = canvas.width, ch = canvas.height;
+  const dx = cw / W, dy = ch / H;
+
+  const T_cold = 293;
+  const q_max = 1700;           // peak temperature rise (°C above T_cold)
+  const STEPS_ENTRY  = 6000;    // steps for plasma phase (t = 0→1200s, ~10s animation)
+  const STEPS_COOL   = 3000;    // steps for cooling phase (~5s animation)
+  const CYCLE = STEPS_ENTRY + STEPS_COOL;
+
+  const PLASMA = [
+    [13,8,135],[84,2,163],[139,10,165],[185,50,137],
+    [219,92,104],[244,136,73],[254,188,43],[240,249,33]
+  ];
+
+  function makeField() {
+    return Array.from({length:H}, ()=>new Float32Array(W).fill(T_cold));
+  }
+  let T = makeField(), T2 = makeField();
+  const alpha = 0.40, dt = 0.45;  // alpha*dt=0.18, CFL=0.36 (stable)
+  let cycleStep = 0;
+
+  function reset() {
+    T  = makeField();
+    T2 = makeField();
+    cycleStep = 0;
+  }
+
+  function step() {
+    // Heat flux: sin profile during entry, 0 during cooling
+    const inEntry = cycleStep < STEPS_ENTRY;
+    const phase   = inEntry ? cycleStep / STEPS_ENTRY : 0;
+    const q       = inEntry ? Math.sin(Math.PI * phase) : 0;
+
+    for(let j=1;j<H-1;j++) {
+      for(let i=1;i<W-1;i++) {
+        T2[j][i] = T[j][i] + alpha*dt*(
+          T[j][i+1]+T[j][i-1]+T[j+1][i]+T[j-1][i] - 4*T[j][i]
+        );
+      }
+    }
+    // Top BC: plasma flux (Gaussian shape across width)
+    for(let i=0;i<W;i++) {
+      const shape = Math.exp(-0.5*Math.pow((i-W/2)/(W*0.28),2));
+      T2[0][i] = T_cold + q_max * q * shape;
+    }
+    // Bottom BC: radiative cooling
+    for(let i=0;i<W;i++) {
+      T2[H-1][i] = T_cold + (T[H-1][i]-T_cold)*0.97;
+    }
+    // Side BCs: insulated
+    for(let j=0;j<H;j++) { T2[j][0]=T2[j][1]; T2[j][W-1]=T2[j][W-2]; }
+
+    [T, T2] = [T2, T];
+    cycleStep++;
+    if(cycleStep >= CYCLE) reset();
+  }
+
+  function draw() {
+    let tmax = T_cold, tmin = T_cold;
+    for(let j=0;j<H;j++) for(let i=0;i<W;i++) {
+      if(T[j][i]>tmax) tmax=T[j][i];
+      if(T[j][i]<tmin) tmin=T[j][i];
+    }
+    const range = Math.max(tmax-tmin, 1);
+    const img = ctx.createImageData(cw, ch);
+    const idx = PLASMA.length-1;
+    for(let j=0;j<H;j++) {
+      for(let i=0;i<W;i++) {
+        const v = Math.max(0, Math.min(1, (T[j][i]-tmin)/range));
+        const fi = Math.min(Math.floor(v*idx), idx-1);
+        const f  = v*idx - fi;
+        const a  = PLASMA[fi], b = PLASMA[Math.min(fi+1,idx)];
+        const r=(a[0]+f*(b[0]-a[0]))|0, g=(a[1]+f*(b[1]-a[1]))|0, bv=(a[2]+f*(b[2]-a[2]))|0;
+        for(let py=0;py<dy;py++) {
+          for(let px=0;px<dx;px++) {
+            const p=((j*dy+py|0)*cw+(i*dx+px|0))*4;
+            img.data[p]=r; img.data[p+1]=g; img.data[p+2]=bv; img.data[p+3]=255;
+          }
+        }
+      }
+    }
+    ctx.putImageData(img,0,0);
+
+    // Contour lines
+    ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=1;
+    for(const lv of [0.2,0.4,0.6,0.8]) {
+      ctx.beginPath();
+      const row = Math.floor((1-lv)*(H-1));
+      for(let i=0;i<W;i++) {
+        const x=i*dx+dx/2, y=row*dy+dy/2;
+        i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+    }
+
+    // Grid mesh
+    ctx.strokeStyle='rgba(255,255,255,0.04)'; ctx.lineWidth=0.5;
+    for(let i=0;i<=W;i++) { ctx.beginPath(); ctx.moveTo(i*dx,0); ctx.lineTo(i*dx,ch); ctx.stroke(); }
+    for(let j=0;j<=H;j++) { ctx.beginPath(); ctx.moveTo(0,j*dy); ctx.lineTo(cw,j*dy); ctx.stroke(); }
+
+    // Time label
+    const el = document.getElementById('simTime');
+    if(el) {
+      if(cycleStep < STEPS_ENTRY) {
+        const tSec = Math.round(cycleStep / STEPS_ENTRY * 1200);
+        el.textContent = `t = ${tSec} s`;
+        el.style.color = '#7dd3fc';
+      } else {
+        el.textContent = currentLang==='fr' ? 'Refroidissement' : 'Cooling';
+        el.style.color = '#94a3b8';
+      }
+    }
+  }
+
+  let frameId;
+  function loop() {
+    for(let k=0;k<10;k++) step();
+    draw();
+    frameId = requestAnimationFrame(loop);
+  }
+  loop();
+
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden) cancelAnimationFrame(frameId);
+    else loop();
+  });
+})();
+
+// ══ I18N SYSTEM ═══════════════════════════════════════════════════════════════
+let currentLang = localStorage.getItem('lang') || 'fr';
+
+const i18n = {
+  fr: {
+    'nav.skills':'Compétences','nav.projects':'Projets','nav.experience':'Expériences',
+    'nav.contact':'Contact','nav.mobile.cv':'↓ Télécharger le CV',
+    'hero.status':'Disponible · Montréal, QC',
+    'hero.subtitle':'&gt; CPI génie mécanique | Simulation numérique · CAD · IA appliquée | Systèmes physiques complexes',
+    'hero.badge.sim':'Simulation numérique','hero.badge.ai':'IA appliquée',
+    'hero.badge.rdm':'Calcul RDM','hero.badge.cad':'Design CAD',
+    'hero.btn.cv':'Télécharger le CV','hero.btn.projects':'Voir mes projets','hero.links':'Liens',
+    'hero.canvas.label':'Simulation thermique 2D — FDM · COMSOL validated',
+    'skills.label':'// Compétences techniques','skills.title':'Stack & outils',
+    'skills.sim.title':'Simulation','skills.sim.sub':'FEM · FDM · CFD · Thermique',
+    'skills.cad.title':'CAD & Design','skills.cad.sub':'3D · 2D · Mécanismes',
+    'skills.ai.title':'IA & ML','skills.ai.sub':'Deep Learning · Surrogate',
+    'skills.prog.title':'Programmation','skills.prog.sub':'Scripts · API · Embarqué',
+    'level.advanced':'Avancé','level.intermediate':'Intermédiaire',
+    'projects.label':'// Projets sélectionnés','projects.title':"Ce que j'ai construit",
+    'projects.see':'Voir les détails →',
+    'tps.desc':"Pipeline FEM→ML pour la protection thermique de rentrée atmosphérique. GP surrogate : 0.03 % d'erreur, 100 000× d'accélération vs COMSOL.",
+    'tps.m1':'Erreur GP','tps.m2':'Accélération','tps.m3':'R² GP',
+    'pole.desc':'Robot agricole téléopéré par Bluetooth pour la collecte de roches. CAD complet SolidWorks + analyse structurale RDM — Fs = 1.95.',
+    'pole.m1':'Coeff. sécurité','pole.m2':'Masse totale','pole.m3':'Alimentation',
+    'ns.desc':'Plateforme de classification acoustique sur 50 classes ESC-50. EfficientNetB3 + YAMNet, API FastAPI, historique SQLite.',
+    'ns.m1':'EfficientNetB3','ns.m2':'YAMNet','ns.m3':'Classes',
+    'hq.desc':'Simulateur de réseau électrique pour Hydro-Québec. Modules hydro, éolien, solaire sur 30+ bassins versants réels HQ.',
+    'hq.m1':'Bassins versants','hq.m2':'Sources énergie','hq.m3':'Partenaire',
+    'exp.label':'// Expérience & formation','exp.title':'Parcours',
+    'exp.intern.label':'Stage professionnel','exp.intern.role':'Stagiaire en ingénierie mécanique',
+    'exp.intern.desc':"Neptronic est spécialisée dans les systèmes de contrôle d'humidité, de température et de qualité de l'air pour applications industrielles et commerciales.",
+    'exp.intern.btn':'↗ Voir les livrables','exp.edu.label':'Formation académique',
+    'exp.edu.degree':'Baccalauréat en génie mécanique · Diplômé mai 2026',
+    'exp.edu.desc':"Mécanique des solides, dynamique des fluides, méthodes numériques, transfert de chaleur, mécanismes et dynamique des machines, résistance des matériaux, conception mécanique.",
+    'contact.label':'// Contact','contact.title':'Travaillons<br/>ensemble',
+    'contact.desc':"Ouvert aux opportunités en simulation numérique, IA appliquée à l'ingénierie, ou mécatronique. Réponse sous 24h.",
+    'contact.gh.text':'Voir mes dépôts',
+    'form.name':'Nom','form.email':'Email','form.message':'Message',
+    'form.ph.name':'Jean Dupont','form.ph.email':'jean@entreprise.com','form.ph.msg':'Votre message...',
+    'form.send':'Envoyer','form.ok':'✓ Message transmis !',
+    'chip.mech':'Mécanique','chip.solid':'Mécanique des solides','chip.fluid':'Dynamique des fluides',
+    'chip.num':'Méthodes numériques','chip.heat':'Transfert de chaleur',
+    'chip.mech2':'Mécanismes & dynamique','chip.rdm':'Résistance des matériaux',
+    'modal.context':'// Contexte & problème','modal.approach':'// Approche & méthodologie',
+    'modal.results':'// Résultats clés','modal.learnings':"// Ce que j'ai appris",
+    'modal.gallery':'// Aperçus du projet',
+    'modal.links':'// Liens',
+    'footer':'© 2026 AMAURY TCHOUPE · CPI · Polytechnique Montréal',
+    'hero.canvas.overlay':'TPS · Champ T(x,y,t)',
+    'modal.extra':'// Aperçu supplémentaire',
+    'nept.header.label':'// Livrables du stage',
+    'nept.header.title':'Neptronic — Projets réalisés',
+    'nept.goal':'But',
+    'nept.resources':'Ressources',
+    'nept.results':'Résultats',
+    'nept.p1.title':'01 — Modèle de volet 20×20',
+    'nept.p1.goal':"Modélisation d'un volet d'entrée d'air pour diffusion d'humidité",
+    'nept.p1.resources':'Autodesk Inventor, analyse données CFD via Excel',
+    'nept.p1.results':"Capacité d'entrée d'air conforme aux exigences",
+    'nept.p2.title':'02 — Système de contrôle PCB humidificateur',
+    'nept.p2.goal':"Modélisation de pièces PCB pour gestion d'humidité",
+    'nept.p2.resources':'Autodesk Inventor',
+    'nept.p2.results':'Température contrôlée entre 20–24°C, assemblage effectif à 90%',
+    'nept.p3.title':'03 — Pièces pour actuateurs',
+    'nept.p3.goal':"Manivelle (50 in.lbs) + support de fixation pour valve d'entrée d'air",
+    'nept.p3.resources':'Autodesk Inventor, analyse dimensionnelle Excel',
+    'nept.p3.results':'Torque de 40 in.lbs (80%), support parfaitement ajusté',
+  },
+  en: {
+    'nav.skills':'Skills','nav.projects':'Projects','nav.experience':'Experience',
+    'nav.contact':'Contact','nav.mobile.cv':'↓ Download CV',
+    'hero.status':'Available · Montréal, QC',
+    'hero.subtitle':'&gt; Mechanical Engineering CPI | Numerical Simulation · CAD · Applied AI | Complex Physical Systems',
+    'hero.badge.sim':'Numerical Simulation','hero.badge.ai':'Applied AI',
+    'hero.badge.rdm':'Structural Analysis','hero.badge.cad':'CAD Design',
+    'hero.btn.cv':'Download CV','hero.btn.projects':'View projects','hero.links':'Links',
+    'hero.canvas.label':'2D Thermal Simulation — FDM · COMSOL validated',
+    'skills.label':'// Technical Skills','skills.title':'Stack & tools',
+    'skills.sim.title':'Simulation','skills.sim.sub':'FEM · FDM · CFD · Thermal',
+    'skills.cad.title':'CAD & Design','skills.cad.sub':'3D · 2D · Mechanisms',
+    'skills.ai.title':'AI & ML','skills.ai.sub':'Deep Learning · Surrogate',
+    'skills.prog.title':'Programming','skills.prog.sub':'Scripts · API · Embedded',
+    'level.advanced':'Advanced','level.intermediate':'Intermediate',
+    'projects.label':'// Selected Projects','projects.title':"What I've built",
+    'projects.see':'See details →',
+    'tps.desc':'FEM→ML pipeline for atmospheric reentry thermal protection. GP surrogate: 0.03% error, 100,000× speedup vs COMSOL.',
+    'tps.m1':'GP Error','tps.m2':'Speedup','tps.m3':'R² GP',
+    'pole.desc':'Bluetooth-teleoperated agricultural robot for rock collection. Full SolidWorks CAD + structural analysis — Fs = 1.95.',
+    'pole.m1':'Safety factor','pole.m2':'Total mass','pole.m3':'Power',
+    'ns.desc':'Acoustic classification platform on 50 ESC-50 classes. EfficientNetB3 + YAMNet, FastAPI, SQLite history.',
+    'ns.m1':'EfficientNetB3','ns.m2':'YAMNet','ns.m3':'Classes',
+    'hq.desc':'Power grid simulator for Hydro-Québec. Hydro, wind, solar modules on 30+ real HQ watersheds.',
+    'hq.m1':'Watersheds','hq.m2':'Energy sources','hq.m3':'Partner',
+    'exp.label':'// Experience & Education','exp.title':'Background',
+    'exp.intern.label':'Professional Internship','exp.intern.role':'Mechanical Engineering Intern',
+    'exp.intern.desc':'Neptronic specializes in humidity control, temperature regulation, and air quality systems for industrial and commercial applications.',
+    'exp.intern.btn':'↗ See deliverables','exp.edu.label':'Academic Education',
+    'exp.edu.degree':'Bachelor of Engineering — Mechanical · Graduated May 2026',
+    'exp.edu.desc':'Solid mechanics, fluid dynamics, numerical methods, heat transfer, machine dynamics, structural analysis, mechanical design.',
+    'contact.label':'// Contact','contact.title':"Let's work<br/>together",
+    'contact.desc':'Open to opportunities in numerical simulation, applied engineering AI, or mechatronics. Response within 24h.',
+    'contact.gh.text':'View my repos',
+    'form.name':'Name','form.email':'Email','form.message':'Message',
+    'form.ph.name':'John Smith','form.ph.email':'john@company.com','form.ph.msg':'Your message...',
+    'form.send':'Send','form.ok':'✓ Message sent!',
+    'chip.mech':'Mechanical','chip.solid':'Solid Mechanics','chip.fluid':'Fluid Dynamics',
+    'chip.num':'Numerical Methods','chip.heat':'Heat Transfer',
+    'chip.mech2':'Machine Dynamics','chip.rdm':'Structural Analysis',
+    'modal.context':'// Context & Problem','modal.approach':'// Approach & Methodology',
+    'modal.results':'// Key Results','modal.learnings':'// Key Learnings',
+    'modal.gallery':'// Project Gallery',
+    'modal.links':'// Links',
+    'footer':'© 2026 AMAURY TCHOUPE · CPI · Polytechnique Montréal',
+    'hero.canvas.overlay':'TPS · T(x,y,t) field',
+    'modal.extra':'// Additional Preview',
+    'nept.header.label':'// Internship Deliverables',
+    'nept.header.title':'Neptronic — Completed Projects',
+    'nept.goal':'Goal',
+    'nept.resources':'Resources',
+    'nept.results':'Results',
+    'nept.p1.title':'01 — 20×20 Damper Model',
+    'nept.p1.goal':'Modeling of an air inlet damper for humidity diffusion',
+    'nept.p1.resources':'Autodesk Inventor, CFD data analysis via Excel',
+    'nept.p1.results':'Air inlet capacity compliant with requirements',
+    'nept.p2.title':'02 — Humidifier PCB Control System',
+    'nept.p2.goal':'Modeling of PCB components for humidity management',
+    'nept.p2.resources':'Autodesk Inventor',
+    'nept.p2.results':'Temperature controlled between 20–24°C, assembly 90% effective',
+    'nept.p3.title':'03 — Actuator Parts',
+    'nept.p3.goal':'Crank arm (50 in.lbs) + mounting bracket for air inlet valve',
+    'nept.p3.resources':'Autodesk Inventor, dimensional analysis via Excel',
+    'nept.p3.results':'Torque of 40 in.lbs (80%), bracket perfectly fitted',
+  }
+};
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === lang)
+  );
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = i18n[lang][el.dataset.i18n];
+    if (v !== undefined) el.innerHTML = v;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = i18n[lang][el.dataset.i18nPh];
+    if (v !== undefined) el.placeholder = v;
+  });
+  document.documentElement.lang = lang;
+}
+
+setLang(currentLang);
+</script>
+</body>
+</html>

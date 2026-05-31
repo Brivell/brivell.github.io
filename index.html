@@ -3,14 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Open Graph (LinkedIn preview) -->
-  <meta property="og:title" content="Amaury Tchoupe — Mechanical Engineer (CPI)" />
-  <meta property="og:description" content="Portfolio: FEM→ML thermal surrogate (100,000× speedup), agricultural robot (Fs=1.95), acoustic classification (93.34%), power grid simulation. COMSOL · SolidWorks · Python · PyTorch." />
-  <meta property="og:image" content="https://brivell.github.io/assets/portfolio-preview-v3.png" />
-  <meta property="og:url" content="https://brivell.github.io" />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-<title>AMAURY TCHOUPE — Ingénieur Mécanique</title>
+  <title>AMAURY TCHOUPE — Ingénieur Mécanique</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -61,7 +54,8 @@
     .nl { position: relative; transition: color .2s; }
     .nl::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 2px; background: #38bdf8; transition: width .25s; border-radius: 2px; }
     .dark .nl::after { background: #22d3ee; }
-    .nl:hover::after { width: 100%; }
+    .nl:hover::after, .nl.active::after { width: 100%; }
+    .nl.active { color: #fff; }
 
     /* ── Reveal animation (scroll-triggered, starts VISIBLE if above fold) ── */
     .rv { opacity: 1; transform: none; }
@@ -1134,10 +1128,25 @@ const obs = new IntersectionObserver(entries=>{
 },{ threshold:0.1 });
 document.querySelectorAll('.rv.will-reveal').forEach(el=>obs.observe(el));
 
-// ══ NAVBAR SHADOW ═════════════════════════════════════════════════════════════
+// ══ NAVBAR SHADOW + ACTIVE SECTION ═══════════════════════════════════════════
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').style.boxShadow = window.scrollY>10 ? '0 4px 30px rgba(0,0,0,.4)' : '';
 });
+
+const navLinks = document.querySelectorAll('nav a.nl');
+const sections = ['competences','projets','experience','contact'].map(id=>document.getElementById(id));
+
+const secObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(l=>{
+        l.classList.toggle('active', l.getAttribute('href') === '#'+e.target.id);
+      });
+    }
+  });
+},{threshold:0.35});
+
+sections.forEach(s=>{ if(s) secObs.observe(s); });
 
 // ══ CONTACT FORM ══════════════════════════════════════════════════════════════
 function handleContact(e) {

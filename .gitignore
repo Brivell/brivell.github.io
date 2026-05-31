@@ -1,0 +1,46 @@
+# Private
+linkedin_profile.txt
+cv_best_practices.md
+
+# Old CV versions
+cv_amaury_tchoupe.html
+cv_amaury_tchoupe_print.html
+cv_amaury_tchoupe_v2.html
+cv_amaury_tchoupe_v3.html
+cv_amaury_tchoupe_v2.pdf
+
+# Scripts
+generate_cv_pdf.py
+screenshot.py
+screenshot_cv.py
+
+# Sensitive project folders
+Portfolio/recherche de jobs/
+Portfolio/Stage Neptronic/
+
+# TPS — large/unnecessary files
+Portfolio/TPS_simulation_final/__pycache__/
+Portfolio/TPS_simulation_final/new version/
+Portfolio/TPS_simulation_final/*.py
+Portfolio/TPS_simulation_final/*.pkl
+Portfolio/TPS_simulation_final/*.mph
+Portfolio/TPS_simulation_final/*.docx
+Portfolio/TPS_simulation_final/*.tex
+
+# NeuroSound — large/unnecessary files
+Portfolio/Neurosound/node_modules/
+Portfolio/Neurosound/Backend/
+Portfolio/Neurosound/Frontend/
+Portfolio/Neurosound/new-esc50/
+Portfolio/Neurosound/new-esc50-augmented/
+Portfolio/Neurosound/.claude
+Portfolio/Neurosound/*.ipynb
+Portfolio/Neurosound/*.py
+Portfolio/Neurosound/*.csv
+Portfolio/Neurosound/*.mjs
+Portfolio/Neurosound/requirements.txt
+Portfolio/Neurosound/CLAUDE_global.md
+
+# Memory & system
+.claude/
+memory/

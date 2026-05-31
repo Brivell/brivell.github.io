@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeuroSound — Amaury Tchoupe</title>
+
+  <!-- Open Graph (LinkedIn preview) -->
+  <meta property="og:title" content="NeuroSound — Deep Learning Acoustic Classification" />
+  <meta property="og:description" content="50-class environmental sound classifier using EfficientNetB3 + YAMNet. 93.34% accuracy on ESC-50. FastAPI backend with SQLite history." />
+  <meta property="og:image" content="https://brivell.github.io/assets/neurosound/ns_01_landing.png" />
+  <meta property="og:url" content="https://brivell.github.io/neurosound" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    body { font-family: 'Space Grotesk', sans-serif; background: #0f172a; color: #f0f9ff; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .g-text { background: linear-gradient(130deg,#a78bfa,#c084fc); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .chip { display:inline-flex; align-items:center; padding:2px 10px; font-family:'JetBrains Mono',monospace; font-size:.68rem; border-radius:6px; border:1px solid rgba(167,139,250,.25); background:rgba(167,139,250,.08); color:#c4b5fd; }
+  </style>
+</head>
+<body>
+
+<div class="min-h-screen flex flex-col">
+
+  <!-- Nav -->
+  <nav class="border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+    <a href="https://brivell.github.io" class="mono text-sm text-slate-400 hover:text-violet-400 transition-colors">
+      ← brivell.github.io
+    </a>
+    <span class="mono text-xs text-slate-600">NeuroSound</span>
+  </nav>
+
+  <!-- Hero -->
+  <main class="flex-1 max-w-4xl mx-auto px-6 py-16 w-full">
+
+    <p class="mono text-violet-400 text-xs uppercase tracking-widest mb-4">// Deep Learning · Acoustics · Web</p>
+
+    <h1 class="text-4xl sm:text-5xl font-bold mb-4 leading-tight">
+      <span class="g-text">NeuroSound</span>
+    </h1>
+
+    <p class="text-slate-400 text-lg leading-relaxed mb-10 max-w-2xl">
+      End-to-end acoustic classification platform targeting the ESC-50 benchmark (50 environmental
+      sound classes) using EfficientNetB3 and YAMNet, with a production FastAPI backend.
+    </p>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
+      <div class="p-4 rounded-2xl border border-slate-700 bg-slate-800/50">
+        <p class="text-2xl font-bold text-violet-400">93.34%</p>
+        <p class="mono text-xs text-slate-500 mt-1">EfficientNetB3</p>
+      </div>
+      <div class="p-4 rounded-2xl border border-slate-700 bg-slate-800/50">
+        <p class="text-2xl font-bold text-violet-400">88.5%</p>
+        <p class="mono text-xs text-slate-500 mt-1">YAMNet accuracy</p>
+      </div>
+      <div class="p-4 rounded-2xl border border-slate-700 bg-slate-800/50">
+        <p class="text-2xl font-bold text-violet-400">50</p>
+        <p class="mono text-xs text-slate-500 mt-1">Sound classes</p>
+      </div>
+      <div class="p-4 rounded-2xl border border-slate-700 bg-slate-800/50">
+        <p class="text-2xl font-bold text-violet-400">2</p>
+        <p class="mono text-xs text-slate-500 mt-1">DL models</p>
+      </div>
+    </div>
+
+    <!-- Image -->
+    <div class="rounded-2xl overflow-hidden border border-slate-700 mb-10">
+      <img src="assets/neurosound/ns_01_landing.png" alt="NeuroSound dashboard" class="w-full" />
+      <p class="mono text-xs text-slate-500 px-4 py-3 bg-slate-800/60">
+        NeuroSound dashboard — real-time audio classification with confidence scores across 50 ESC-50 classes
+      </p>
+    </div>
+
+    <!-- Tags -->
+    <div class="flex flex-wrap gap-2 mb-10">
+      <span class="chip">PyTorch</span>
+      <span class="chip">EfficientNetB3</span>
+      <span class="chip">YAMNet</span>
+      <span class="chip">FastAPI</span>
+      <span class="chip">SQLite</span>
+      <span class="chip">ESC-50</span>
+      <span class="chip">Docker</span>
+    </div>
+
+    <!-- Links -->
+    <div class="flex flex-wrap gap-3">
+      <a href="https://github.com/Brivell/neurosound" target="_blank" rel="noopener"
+         class="inline-flex items-center gap-2 px-5 py-3 bg-violet-600 hover:bg-violet-500 text-white font-semibold rounded-xl transition-all text-sm">
+        <i class="fa-brands fa-github"></i> View on GitHub
+      </a>
+      <a href="https://brivell.github.io" class="inline-flex items-center gap-2 px-5 py-3 border border-slate-700 hover:border-slate-500 text-slate-400 hover:text-white font-semibold rounded-xl transition-all text-sm">
+        <i class="fa-solid fa-grid-2"></i> Portfolio
+      </a>
+    </div>
+
+  </main>
+
+  <footer class="border-t border-slate-800 px-6 py-5 text-center">
+    <p class="mono text-xs text-slate-600">© 2026 Amaury Tchoupe · <a href="https://brivell.github.io" class="text-violet-600 hover:text-violet-400">brivell.github.io</a></p>
+  </footer>
+
+</div>
+</body>
+</html>

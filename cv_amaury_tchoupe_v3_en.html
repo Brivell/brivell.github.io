@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>Resume — Amaury Tchoupe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal:    #00b4d8;
+    --teal2:   #0891b2;
+    --teal3:   #0e7490;
+    --dark:    #0a3d55;
+    --navy:    #0c2d3e;
+    --text:    #111827;
+    --muted:   #374151;
+    --dim:     #6b7280;
+    --sidebar: #f0f6fb;
+    --sborder: #cde4ef;
+    --border:  #e2e8f0;
+    --card:    #f8fafc;
+    --font:    'Inter', system-ui, sans-serif;
+  }
+
+  @page { size: A4; margin: 0; }
+
+  html, body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0; padding: 0;
+    background: white;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    font-family: var(--font);
+    font-size: 11px;
+    color: var(--text);
+    line-height: 1.45;
+  }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .cv-header {
+    background: var(--dark);
+    padding: 13px 22px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    align-items: center;
+    flex-shrink: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .h-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: .03em;
+    line-height: 1.15;
+  }
+  .h-name span { color: var(--teal); }
+
+  .h-title {
+    font-size: 8.5px;
+    font-weight: 400;
+    color: #7dd3fc;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    margin-top: 6px;
+    line-height: 1.8;
+  }
+
+  .header-contact {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: right;
+  }
+  .header-contact li {
+    font-size: 9px;
+    color: #bae6fd;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+  .header-contact .icon { color: var(--teal); font-size: 8.5px; flex-shrink: 0; }
+
+  .cv-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 58mm 1fr;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .sidebar {
+    background: var(--sidebar);
+    border-right: 1px solid var(--sborder);
+    padding: 13px 14px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  .main {
+    background: #ffffff;
+    padding: 13px 18px 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  .main > div:last-child {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .main > div:last-child .section-title { flex-shrink: 0; }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1.5px;
+    background: var(--teal);
+  }
+  .s-icon {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: var(--teal);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .edu-degree { font-size: 11px; font-weight: 700; color: #111827; margin-bottom: 2px; }
+  .edu-school  { font-size: 10px; color: var(--teal2); font-weight: 500; margin-bottom: 2px; }
+  .edu-years   { font-size: 9px; color: var(--dim); }
+
+  .edu-courses { margin-top: 10px; }
+  .edu-courses-label {
+    font-size: 7.5px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--dim); margin-bottom: 6px;
+  }
+  .edu-courses-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .edu-courses-list li {
+    font-size: 9px; color: #4b5563;
+    padding-left: 10px; position: relative; line-height: 1.45;
+  }
+  .edu-courses-list li::before {
+    content: '·'; position: absolute; left: 0;
+    color: var(--teal); font-size: 14px; top: -3px;
+  }
+
+  .skill-cat {
+    font-size: 8px; font-weight: 700; color: var(--teal3);
+    text-transform: uppercase; letter-spacing: .1em;
+    margin-top: 7px; margin-bottom: 5px;
+  }
+  .skill-cat:first-child { margin-top: 0; }
+
+  .skill-item { margin-bottom: 5px; }
+  .skill-item:last-child { margin-bottom: 0; }
+
+  .skill-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 3px;
+  }
+  .skill-name { font-size: 10px; font-weight: 600; color: #1e293b; }
+  .skill-level { font-size: 8px; color: var(--dim); font-style: italic; }
+
+  .skill-bar-bg {
+    width: 100%; height: 4px;
+    background: #dbeafe; border-radius: 2px; overflow: hidden;
+  }
+  .skill-bar-fill {
+    height: 4px; background: var(--teal); border-radius: 2px;
+  }
+
+  .lang-item { margin-bottom: 8px; }
+  .lang-item:last-child { margin-bottom: 0; }
+  .lang-row {
+    display: flex; justify-content: space-between;
+    align-items: baseline; margin-bottom: 3px;
+  }
+  .lang-name { font-size: 10px; font-weight: 600; color: #1e293b; }
+  .lang-lvl  { font-size: 8px; color: var(--dim); font-style: italic; }
+
+  .summary-text {
+    font-size: 10.5px; color: var(--muted); line-height: 1.5;
+  }
+  .summary-text strong { color: var(--teal2); font-weight: 700; }
+  .metric { color: var(--teal2); font-weight: 700; }
+
+  .exp-item { margin-bottom: 8px; }
+  .exp-item:last-child { margin-bottom: 0; }
+
+  .exp-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; gap: 8px; margin-bottom: 2px;
+  }
+  .exp-role { font-size: 12px; font-weight: 700; color: var(--text); flex: 1; }
+
+  .date-badge {
+    display: inline-block;
+    background: var(--teal2);
+    color: #fff;
+    font-size: 8px; font-weight: 600;
+    padding: 3px 9px; border-radius: 10px;
+    white-space: nowrap; flex-shrink: 0;
+    letter-spacing: .02em;
+  }
+
+  .exp-company {
+    font-size: 9.5px; color: var(--teal2);
+    font-style: italic; margin-bottom: 6px;
+  }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+  .exp-bullets li {
+    font-size: 10.5px; color: var(--muted);
+    padding-left: 13px; position: relative; line-height: 1.4;
+  }
+  .exp-bullets li::before {
+    content: '▸'; position: absolute; left: 0;
+    color: var(--teal); font-size: 7px; top: 2.5px;
+  }
+  .exp-bullets li strong { color: #000; font-weight: 700; }
+
+  .proj-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .proj-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--teal);
+    border-radius: 3px;
+    padding: 7px 12px 8px;
+  }
+
+  .proj-header {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 5px; gap: 6px;
+  }
+  .proj-name { font-size: 11.5px; font-weight: 700; color: var(--text); flex: 1; }
+
+  .proj-bullets { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+  .proj-bullets li {
+    font-size: 10px; color: var(--muted);
+    padding-left: 13px; position: relative; line-height: 1.35;
+  }
+  .proj-bullets li::before {
+    content: '▸'; position: absolute; left: 0;
+    color: var(--teal); font-size: 6.5px; top: 2.5px;
+  }
+  .proj-bullets li strong { font-weight: 700; color: #000; }
+
+  .proj-tags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 5px; }
+  .proj-tag {
+    font-size: 7.5px; font-weight: 500; color: var(--teal2);
+    background: #ecfeff; border: 1px solid rgba(0,180,216,.25);
+    border-radius: 3px; padding: 1px 5px; line-height: 1.6;
+  }
+
+  @media screen {
+    body {
+      background: #ffffff; width: auto; height: auto;
+      display: flex; flex-direction: column;
+      align-items: center; padding: 0;
+    }
+  }
+
+  @media print {
+    @page { size: A4; margin: 0; }
+    html, body { width: 210mm; height: 297mm; }
+    .print-btn { display: none !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    a { color: inherit !important; text-decoration: none !important; }
+  }
+
+  .print-btn {
+    position: fixed; top: 16px; right: 16px; z-index: 100;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 18px; background: var(--teal); color: #fff;
+    font-family: var(--font); font-size: 11px; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    border-radius: 5px; cursor: pointer; border: none;
+    box-shadow: 0 3px 10px rgba(0,180,216,.35);
+  }
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">↓ PDF</button>
+
+<div class="page">
+
+  <!-- ══ HEADER ════════════════════════════════════════════ -->
+  <div class="cv-header">
+    <div>
+      <div class="h-name">AMAURY <span>TCHOUPE</span></div>
+      <div class="h-title">
+        Mechanical Engineer · Numerical Simulation · Machine Learning
+      </div>
+    </div>
+    <ul class="header-contact">
+      <li><span class="icon">✉</span>amaurytchoupe01@gmail.com</li>
+      <li><span class="icon">☎</span>+1 (514) 652-3681</li>
+      <li><span class="icon">⌖</span>Montréal, QC — Open to relocation</li>
+      <li><span class="icon">⌥</span>github.com/Brivell</li>
+      <li><span class="icon">↗</span>linkedin.com/in/amaurytchoupe</li>
+    </ul>
+  </div>
+
+  <div class="cv-body">
+
+    <!-- ══ SIDEBAR ══════════════════════════════════════════ -->
+    <aside class="sidebar">
+
+      <!-- EDUCATION -->
+      <div>
+        <div class="section-title"><span class="s-icon"></span>Education</div>
+        <div class="edu-degree">B.Eng. Mechanical Engineering</div>
+        <div class="edu-school">Polytechnique Montréal</div>
+        <div class="edu-years">2020 — 2026 · Graduated</div>
+        <div class="edu-courses">
+          <div class="edu-courses-label">Relevant Courses</div>
+          <ul class="edu-courses-list">
+            <li>Numerical Methods — FEM, FDM, COMSOL</li>
+            <li>Structural Analysis &amp; Mechanics of Materials</li>
+            <li>Fluid Mechanics &amp; Thermodynamics</li>
+            <li>Applied AI in Engineering (ML, Neural Networks)</li>
+            <li>System Dynamics &amp; Control</li>
+            <li>Computer-Aided Design — GD&amp;T</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SKILLS -->
+      <div>
+        <div class="section-title"><span class="s-icon"></span>Skills</div>
+
+        <div class="skill-cat">Simulation / FEM</div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">COMSOL</span><span class="skill-level">Advanced</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:88%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">FEM / FDM</span><span class="skill-level">Advanced</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:85%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">CFD</span><span class="skill-level">Advanced</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:80%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">ANSYS</span><span class="skill-level">Intermediate</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:60%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">Simulia</span><span class="skill-level">Intermediate</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:55%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">OpenFOAM</span><span class="skill-level">Intermediate</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:52%"></div></div>
+        </div>
+
+        <div class="skill-cat">CAD &amp; Design</div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">SolidWorks</span><span class="skill-level">Advanced</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:85%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">CATIA</span><span class="skill-level">Advanced</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:82%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">Inventor</span><span class="skill-level">Intermediate</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:62%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">Enovia</span><span class="skill-level">Intermediate</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:52%"></div></div>
+        </div>
+
+        <div class="skill-cat">ML / AI</div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">Gaussian Process</span><span class="skill-level">Expert</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:93%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">scikit-learn</span><span class="skill-level">Advanced</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:85%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">PyTorch</span><span class="skill-level">Advanced</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:80%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">TensorFlow</span><span class="skill-level">Intermediate</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:62%"></div></div>
+        </div>
+
+        <div class="skill-cat">Programming</div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">Python</span><span class="skill-level">Expert</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:93%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">MATLAB</span><span class="skill-level">Advanced</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:85%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">FastAPI</span><span class="skill-level">Intermediate</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:62%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-row"><span class="skill-name">Git</span><span class="skill-level">Intermediate</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:58%"></div></div>
+        </div>
+      </div>
+
+      <!-- LANGUAGES -->
+      <div>
+        <div class="section-title"><span class="s-icon"></span>Languages</div>
+        <div class="lang-item">
+          <div class="lang-row"><span class="lang-name">French</span><span class="lang-lvl">Native language</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:100%"></div></div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-row"><span class="lang-name">English</span><span class="lang-lvl">B2 Level (Upper Intermediate)</span></div>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:68%"></div></div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ══ MAIN ══════════════════════════════════════════════ -->
+    <main class="main">
+
+      <!-- PROFILE -->
+      <div>
+        <div class="section-title"><span class="s-icon"></span>Profile</div>
+        <p class="summary-text">
+          Mechanical Engineer · Polytechnique Montréal (2026) — specialized in <strong>FEM</strong> (COMSOL, ANSYS) and <strong>machine learning applied to physical simulation</strong>. Built a <strong>Gaussian Process</strong> surrogate model (<span class="metric">R²=0.9999</span>, <span class="metric">100,000×</span> speedup over FEM, 500 COMSOL simulations) and an audio CNN pipeline (<span class="metric">93.34%</span> accuracy). End-to-end ownership from specifications to tested prototype — Neptronic internship (HVAC, <strong>GD&amp;T</strong>) and 4 delivered technical projects. Proficient in CAD (SolidWorks, CATIA), CFD and production-ready API deployment.
+        </p>
+      </div>
+
+      <!-- EXPERIENCE -->
+      <div>
+        <div class="section-title"><span class="s-icon"></span>Professional Experience</div>
+        <div class="exp-item">
+          <div class="exp-header">
+            <div class="exp-role">Mechanical Engineering Intern</div>
+            <span class="date-badge">May 2023 — Aug 2024</span>
+          </div>
+          <div class="exp-company">Neptronic · Montréal, QC · HVAC Systems &amp; Industrial Humidification</div>
+          <ul class="exp-bullets">
+            <li>Modeled a 20×20 cm HVAC air inlet damper (Autodesk Inventor) — airflow compliant with specifications on <strong>first iteration</strong>, zero revision cycles.</li>
+            <li>Developed a <strong>PCB control system for the humidifier</strong>: circuit schematic, CFD analysis and supplier data integration.</li>
+            <li>Designed a quality measurement fixture with <strong>GD&amp;T</strong> dimensioning for the production test line.</li>
+            <li>CAD design (Autodesk Inventor) of an actuator crank arm for air inlet valve (target: <strong>50 in·lbs</strong>) and auxiliary switch mounting bracket — torque achieved: <span class="metric">40 in·lbs</span> (80% of target, limited by assembly constraints), bracket fit validated in production.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- PROJECTS -->
+      <div>
+        <div class="section-title"><span class="s-icon"></span>Technical Projects</div>
+        <div class="proj-grid">
+
+          <div class="proj-item">
+            <div class="proj-header">
+              <span class="proj-name">TPS Thermal Surrogate</span>
+              <span class="date-badge">2025</span>
+            </div>
+            <ul class="proj-bullets">
+              <li>Built a Finite Difference (FDM) → <strong>Finite Element (FEM)</strong> → Machine Learning pipeline for thermal modeling of an atmospheric reentry heat shield.</li>
+              <li>Gaussian Process surrogate model (<span class="metric">500</span> COMSOL simulations): <span class="metric">R²=0.9999</span>, <span class="metric">0.03%</span> error, <span class="metric">100,000×</span> speedup over FEM.</li>
+              <li>Trained a full-field MLP T(x,y,t) on a 21×21×181 grid: <span class="metric">R²=0.9875</span>, <span class="metric">600×</span> speedup.</li>
+              <li>Deployed an interactive Streamlit app with real-time GO/NO-GO heat map for field engineers.</li>
+            </ul>
+            <div class="proj-tags">
+              <span class="proj-tag">COMSOL</span><span class="proj-tag">Python</span><span class="proj-tag">scikit-learn</span><span class="proj-tag">Gaussian Process</span><span class="proj-tag">MLP</span><span class="proj-tag">FEM</span><span class="proj-tag">Streamlit</span>
+            </div>
+          </div>
+
+          <div class="proj-item">
+            <div class="proj-header">
+              <span class="proj-name">HarmoniQ — Electrical Grid Simulator</span>
+              <span class="date-badge">2024 — 2025</span>
+            </div>
+            <ul class="proj-bullets">
+              <li>Built a modular Python package simulating optimal dispatch of <span class="metric">35+</span> power plants — replicating the real Hydro-Québec grid topology.</li>
+              <li>Integrated <span class="metric">30+</span> geospatial watersheds, <span class="metric">35+</span> power plants and MRC transmission topology.</li>
+              <li>Modeled <span class="metric">5</span> energy sources (hydro, wind, solar, nuclear, thermal) and power flows via PyPSA.</li>
+              <li>Exposed a Flask REST API for dynamic optimal dispatch queries and network flow visualization.</li>
+            </ul>
+            <div class="proj-tags">
+              <span class="proj-tag">Python</span><span class="proj-tag">PyPSA</span><span class="proj-tag">SQLAlchemy</span><span class="proj-tag">Pandas</span><span class="proj-tag">pvlib</span><span class="proj-tag">Flask</span>
+            </div>
+          </div>
+
+          <div class="proj-item">
+            <div class="proj-header">
+              <span class="proj-name">NeuroSound — Acoustic Classifier</span>
+              <span class="date-badge">2023 — 2024</span>
+            </div>
+            <ul class="proj-bullets">
+              <li>Designed <span class="metric">2</span> independent CNN pipelines — ESC-50 dataset, <span class="metric">50</span> classes, <span class="metric">2,000</span> samples.</li>
+              <li>EfficientNetB3 + multi-head attention → <span class="metric">93.34%</span> accuracy; YAMNet (AudioSet) fine-tuned → <span class="metric">88.5%</span>.</li>
+              <li>Automated audio preprocessing: MFCC, mel-spectrogram, augmentation, normalization via NumPy/librosa.</li>
+              <li>Production-ready FastAPI — async SQLAlchemy, Docker, lifecycle handlers.</li>
+            </ul>
+            <div class="proj-tags">
+              <span class="proj-tag">TensorFlow</span><span class="proj-tag">EfficientNetB3</span><span class="proj-tag">YAMNet</span><span class="proj-tag">FastAPI</span><span class="proj-tag">Docker</span><span class="proj-tag">SQLite</span>
+            </div>
+          </div>
+
+          <div class="proj-item">
+            <div class="proj-header">
+              <span class="proj-name">POL-E — Bluetooth-Teleoperated Agricultural Robot</span>
+              <span class="date-badge">2023</span>
+            </div>
+            <ul class="proj-bullets">
+              <li>Designed a Bluetooth robot (<span class="metric">1.2 kg</span>, 6 V DC) in SolidWorks/CATIA — from CAD modeling to physical assembly.</li>
+              <li>Validated PLA fork by <strong>structural analysis</strong>: σ_max = <span class="metric">25.35 MPa</span>, Fs = <span class="metric">1.95</span>.</li>
+              <li>Programmed Arduino C++ control system: Bluetooth teleoperation, DC motor and actuator management.</li>
+              <li><strong>1st payload/time ratio</strong> — POL-E 2023 Competition: <span class="metric">400 g</span> transported in <span class="metric">45 seconds</span>.</li>
+            </ul>
+            <div class="proj-tags">
+              <span class="proj-tag">SolidWorks</span><span class="proj-tag">CATIA</span><span class="proj-tag">Arduino</span><span class="proj-tag">C++</span><span class="proj-tag">Structural Analysis</span><span class="proj-tag">Bluetooth</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div><!-- /.cv-body -->
+</div><!-- /.page -->
+
+</body>
+</html>

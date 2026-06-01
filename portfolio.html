@@ -112,6 +112,25 @@
     .lang-btn.active { background:#0ea5e9; color:#fff; }
     .lang-btn:hover:not(.active) { color:#94a3b8; }
 
+    /* ── CV Dropdown ── */
+    .cv-dropdown { position: relative; display: inline-flex; }
+    .cv-drop-menu {
+      display: none; position: absolute; top: calc(100% + 8px); right: 0;
+      background: #1e293b; border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px; overflow: hidden; min-width: 175px; z-index: 200;
+      box-shadow: 0 8px 28px rgba(0,0,0,.5);
+    }
+    .cv-drop-menu.open { display: block; }
+    .cv-drop-menu a {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 14px; font-size: 11px; font-weight: 600;
+      color: #e2e8f0; text-decoration: none;
+      font-family: 'JetBrains Mono', monospace; letter-spacing: .04em;
+      transition: background .15s;
+    }
+    .cv-drop-menu a:hover { background: rgba(255,255,255,.08); color: #fff; }
+    .cv-drop-menu a + a { border-top: 1px solid rgba(255,255,255,.08); }
+
     /* ── Input focus ── */
     .finput { transition:border-color .2s, box-shadow .2s; }
     .finput:focus { outline:none; border-color:#38bdf8; box-shadow:0 0 0 3px rgba(56,189,248,.15); }
@@ -191,9 +210,15 @@
     <div class="flex items-center gap-3">
       <div class="lang-toggle"><button class="lang-btn active" data-lang="fr" onclick="setLang('fr')">FR</button><button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button></div>
       <div class="hidden md:block w-px h-4 bg-slate-700"></div>
-      <a href="cv_amaury_tchoupe_v3.pdf" download="cv_amaury_tchoupe.pdf" class="hidden md:inline-flex items-center gap-1.5 px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white text-xs font-semibold rounded-lg transition-all font-mono uppercase tracking-wider shadow-lg shadow-sky-900/40">
-        <i class="fa-solid fa-download"></i> CV
-      </a>
+      <div class="cv-dropdown hidden md:inline-flex" id="cvDropNav">
+        <button onclick="toggleCvDrop('cvDropNav')" class="inline-flex items-center gap-1.5 px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white text-xs font-semibold rounded-lg transition-all font-mono uppercase tracking-wider shadow-lg shadow-sky-900/40">
+          <i class="fa-solid fa-download"></i> CV <i class="fa-solid fa-chevron-down text-[8px] ml-0.5"></i>
+        </button>
+        <div class="cv-drop-menu">
+          <a href="cv_amaury_tchoupe_v3.pdf" download="cv_amaury_tchoupe_fr.pdf">🇫🇷 Français</a>
+          <a href="cv_amaury_tchoupe_v3_en.pdf" download="cv_amaury_tchoupe_en.pdf">🇬🇧 English</a>
+        </div>
+      </div>
       <button id="mBtn" class="md:hidden w-9 h-9 flex items-center justify-center text-slate-400">
         <i class="fa-solid fa-bars"></i>
       </button>
@@ -205,7 +230,8 @@
     <a href="#projets"     class="text-sm text-slate-300" data-i18n="nav.projects">Projets</a>
     <a href="#experience"  class="text-sm text-slate-300" data-i18n="nav.experience">Expériences</a>
     <a href="#contact"     class="text-sm text-slate-300" data-i18n="nav.contact">Contact</a>
-    <a href="cv_amaury_tchoupe_v3.pdf" download="cv_amaury_tchoupe.pdf" class="text-sm font-semibold text-sky-400" data-i18n="nav.mobile.cv">↓ Télécharger le CV</a>
+    <a href="cv_amaury_tchoupe_v3.pdf" download="cv_amaury_tchoupe_fr.pdf" class="text-sm font-semibold text-sky-400">🇫🇷 CV — Français</a>
+    <a href="cv_amaury_tchoupe_v3_en.pdf" download="cv_amaury_tchoupe_en.pdf" class="text-sm font-semibold text-sky-300">🇬🇧 CV — English</a>
   </div>
 </nav>
 
@@ -257,10 +283,16 @@
 
         <!-- CTAs -->
         <div class="flex flex-wrap gap-3 mb-10 hero-in d5">
-          <a href="cv_amaury_tchoupe_v3.pdf" download="cv_amaury_tchoupe.pdf"
-             class="inline-flex items-center gap-2 px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-xl transition-all shadow-xl shadow-sky-900/40 hover:shadow-sky-800/60 text-sm">
-            <i class="fa-solid fa-download text-xs"></i> <span data-i18n="hero.btn.cv">Télécharger le CV</span>
-          </a>
+          <div class="cv-dropdown" id="cvDropHero">
+            <button onclick="toggleCvDrop('cvDropHero')"
+               class="inline-flex items-center gap-2 px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-xl transition-all shadow-xl shadow-sky-900/40 hover:shadow-sky-800/60 text-sm">
+              <i class="fa-solid fa-download text-xs"></i> <span data-i18n="hero.btn.cv">Télécharger le CV</span> <i class="fa-solid fa-chevron-down text-[9px]"></i>
+            </button>
+            <div class="cv-drop-menu">
+              <a href="cv_amaury_tchoupe_v3.pdf" download="cv_amaury_tchoupe_fr.pdf">🇫🇷 Français</a>
+              <a href="cv_amaury_tchoupe_v3_en.pdf" download="cv_amaury_tchoupe_en.pdf">🇬🇧 English</a>
+            </div>
+          </div>
           <a href="#projets"
              class="inline-flex items-center gap-2 px-6 py-3 font-semibold rounded-xl transition-all text-sm"
              style="border:2px solid #1e3a5f;color:#1e3a5f;background:transparent"
@@ -711,10 +743,16 @@
                     class="flex-1 py-3 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-xl transition-all text-sm shadow-lg shadow-sky-500/30">
               <span data-i18n="form.send">Envoyer</span> <i class="fa-solid fa-paper-plane ml-1 text-xs"></i>
             </button>
-            <a href="cv_amaury_tchoupe_v3.pdf" download="cv_amaury_tchoupe.pdf"
-               class="px-4 py-3 border border-white/40 hover:border-white text-white/70 hover:text-white font-semibold rounded-xl transition-all text-sm flex items-center gap-1.5">
-              <i class="fa-solid fa-download text-xs"></i> CV
-            </a>
+            <div class="cv-dropdown" id="cvDropContact">
+              <button onclick="toggleCvDrop('cvDropContact')"
+                 class="px-4 py-3 border border-white/40 hover:border-white text-white/70 hover:text-white font-semibold rounded-xl transition-all text-sm flex items-center gap-1.5">
+                <i class="fa-solid fa-download text-xs"></i> CV <i class="fa-solid fa-chevron-down text-[9px]"></i>
+              </button>
+              <div class="cv-drop-menu">
+                <a href="cv_amaury_tchoupe_v3.pdf" download="cv_amaury_tchoupe_fr.pdf">🇫🇷 Français</a>
+                <a href="cv_amaury_tchoupe_v3_en.pdf" download="cv_amaury_tchoupe_en.pdf">🇬🇧 English</a>
+              </div>
+            </div>
           </div>
           <div id="formOk" class="hidden text-center py-1 text-sm text-emerald-400 font-mono" data-i18n="form.ok">✓ Message transmis !</div>
         </form>
@@ -1193,6 +1231,19 @@ function closeNeptronicOvl(e) {
   if (e.target === document.getElementById('neptronic-modal')) closeNeptronicModal();
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeNeptronicModal(); } });
+
+// ══ CV DROPDOWN ═══════════════════════════════════════════════════════════════
+function toggleCvDrop(id) {
+  document.querySelectorAll('.cv-drop-menu').forEach(m => {
+    if (m.parentElement.id !== id) m.classList.remove('open');
+  });
+  document.querySelector('#' + id + ' .cv-drop-menu').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.cv-dropdown')) {
+    document.querySelectorAll('.cv-drop-menu').forEach(m => m.classList.remove('open'));
+  }
+});
 
 // ══ MOBILE MENU ═══════════════════════════════════════════════════════════════
 document.getElementById('mBtn').addEventListener('click',()=>{
